@@ -1,0 +1,7 @@
+﻿  Performing Custom Build Tools
+  lexer.cpp
+C:\Users\Janelle\thread-vis\parser\log-parser\log-parser\lexer.l(14,20): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  log-parser.cpp
+  parser.cpp
+  Generating Code...
+  log-parser.vcxproj -> C:\Users\Janelle\thread-vis\parser\log-parser\Debug\log-parser.exe

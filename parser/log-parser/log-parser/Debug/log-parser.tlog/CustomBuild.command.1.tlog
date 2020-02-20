@@ -1,0 +1,4 @@
+^C:\USERS\JANELLE\THREAD-VIS\PARSER\LOG-PARSER\LOG-PARSER\LEXER.L
+win_flex --wincompat -o lexer.cpp lexer.l
+^C:\USERS\JANELLE\THREAD-VIS\PARSER\LOG-PARSER\LOG-PARSER\PARSER.Y
+win_bison -o parser.cpp parser.y

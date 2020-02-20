@@ -1,0 +1,8 @@
+win_flex --wincompat lexer.l
+win_bison -dy parser.y
+
+compile program:
+cl log-parser.cpp parser.cpp lexer.cpp
+
+run program:
+log-parser < file.txt
