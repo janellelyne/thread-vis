@@ -1,7 +1,23 @@
 ﻿  Performing Custom Build Tools
+parser.y : warning : 4 nonterminals useless in grammar [-Wother]
+parser.y : warning : 26 rules useless in grammar [-Wother]
+  parser.y:59.1-11: warning: nonterminal useless in grammar: calculation [-Wother]
+     59 | calculation: 
+        | ^~~~~~~~~~~
+  parser.y:63.1-4: warning: nonterminal useless in grammar: line [-Wother]
+     63 | line: T_NEWLINE
+        | ^~~~
+  parser.y:69.1-16: warning: nonterminal useless in grammar: mixed_expression [-Wother]
+     69 | mixed_expression: T_FLOAT                 		 { $$ = $1; }
+        | ^~~~~~~~~~~~~~~~
+  parser.y:86.1-10: warning: nonterminal useless in grammar: expression [-Wother]
+     86 | expression: T_INT				{ $$ = $1; }
+        | ^~~~~~~~~~
+  Performing Custom Build Tools
   lexer.cpp
 C:\Users\Janelle\thread-vis\parser\log-parser\log-parser\lexer.l(14,20): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   log-parser.cpp
   parser.cpp
+C:\Users\Janelle\thread-vis\parser\log-parser\log-parser\parser.y(47,13): warning C4476: 'printf' : unknown type field character ';' in format specifier
   Generating Code...
   log-parser.vcxproj -> C:\Users\Janelle\thread-vis\parser\log-parser\Debug\log-parser.exe

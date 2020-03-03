@@ -467,16 +467,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   62
+#define YYLAST   0
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  13
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  5
+#define YYNNTS  2
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  27
+#define YYNRULES  2
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  42
+#define YYNSTATES  3
 
 #define YYUNDEFTOK  2
 #define YYMAXUTOK   267
@@ -524,9 +524,7 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    33,    33,    34,    37,    38,    39,    40,    43,    44,
-      45,    46,    47,    48,    49,    50,    51,    52,    53,    54,
-      55,    56,    57,    60,    61,    62,    63,    64
+       0,    32,    32
 };
 #endif
 
@@ -537,7 +535,7 @@ static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "T_INT", "T_FLOAT", "T_PLUS", "T_MINUS",
   "T_MULTIPLY", "T_DIVIDE", "T_LEFT", "T_RIGHT", "T_NEWLINE", "T_QUIT",
-  "$accept", "calculation", "line", "mixed_expression", "expression", YY_NULLPTR
+  "$accept", "begin_parse", YY_NULLPTR
 };
 #endif
 
@@ -551,7 +549,7 @@ static const yytype_int16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF (-6)
+#define YYPACT_NINF (-1)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -565,11 +563,7 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -6,    31,    -6,    -6,    -6,    17,    -6,    -3,    -6,    -4,
-      39,    46,    52,    -6,    17,    17,    17,    17,    -6,    17,
-      17,    17,    17,    -6,    -6,    -6,    -2,    11,    -2,    11,
-      -6,    -6,    -6,    -6,    -2,    11,    -2,    11,    -6,    -6,
-      -6,    -6
+      -1,     0,    -1
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -577,23 +571,19 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       2,     0,     1,    23,     8,     0,     4,     0,     3,     0,
-       0,     0,     0,     7,     0,     0,     0,     0,     5,     0,
-       0,     0,     0,     6,    13,    27,     9,    18,    10,    19,
-      11,    20,    12,    21,    14,    24,    15,    25,    16,    26,
-      17,    22
+       2,     0,     1
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -6,    -6,    -6,    -5,     8
+      -1,    -1
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     1,     8,     9,    10
+      -1,     1
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -601,51 +591,31 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      11,    14,    15,    16,    17,    16,    17,    18,    13,    26,
-      28,    30,    32,    12,    34,    36,    38,    40,    21,    22,
-       3,     4,    27,    29,    31,    33,     5,    35,    37,    39,
-      41,     2,     0,     0,     3,     4,     0,     0,     0,     0,
-       5,     0,     6,     7,    19,    20,    21,    22,     0,     0,
-      23,    14,    15,    16,    17,     0,    24,    19,    20,    21,
-      22,     0,    25
+       2
 };
 
 static const yytype_int8 yycheck[] =
 {
-       5,     5,     6,     7,     8,     7,     8,    11,    11,    14,
-      15,    16,    17,     5,    19,    20,    21,    22,     7,     8,
-       3,     4,    14,    15,    16,    17,     9,    19,    20,    21,
-      22,     0,    -1,    -1,     3,     4,    -1,    -1,    -1,    -1,
-       9,    -1,    11,    12,     5,     6,     7,     8,    -1,    -1,
-      11,     5,     6,     7,     8,    -1,    10,     5,     6,     7,
-       8,    -1,    10
+       0
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    14,     0,     3,     4,     9,    11,    12,    15,    16,
-      17,    16,    17,    11,     5,     6,     7,     8,    11,     5,
-       6,     7,     8,    11,    10,    10,    16,    17,    16,    17,
-      16,    17,    16,    17,    16,    17,    16,    17,    16,    17,
-      16,    17
+       0,    14,     0
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    13,    14,    14,    15,    15,    15,    15,    16,    16,
-      16,    16,    16,    16,    16,    16,    16,    16,    16,    16,
-      16,    16,    16,    17,    17,    17,    17,    17
+       0,    13,    14
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     0,     2,     1,     2,     2,     2,     1,     3,
-       3,     3,     3,     3,     3,     3,     3,     3,     3,     3,
-       3,     3,     3,     1,     3,     3,     3,     3
+       0,     2,     0
 };
 
 
@@ -1340,146 +1310,39 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 5:
-#line 38 "parser.y"
-                                 { printf("\tResult: %f\n", (yyvsp[-1].fval));}
-#line 1347 "parser.cpp"
-    break;
-
-  case 6:
-#line 39 "parser.y"
-                           { printf("\tResult: %i\n", (yyvsp[-1].ival)); }
-#line 1353 "parser.cpp"
-    break;
-
-  case 7:
-#line 40 "parser.y"
-                       { printf("bye!\n"); exit(0); }
-#line 1359 "parser.cpp"
-    break;
-
-  case 8:
-#line 43 "parser.y"
-                                                         { (yyval.fval) = (yyvsp[0].fval); }
-#line 1365 "parser.cpp"
-    break;
-
-  case 9:
-#line 44 "parser.y"
-                                                         { (yyval.fval) = (yyvsp[-2].fval) + (yyvsp[0].fval); }
-#line 1371 "parser.cpp"
-    break;
-
-  case 10:
-#line 45 "parser.y"
-                                                         { (yyval.fval) = (yyvsp[-2].fval) - (yyvsp[0].fval); }
-#line 1377 "parser.cpp"
-    break;
-
-  case 11:
-#line 46 "parser.y"
-                                                         { (yyval.fval) = (yyvsp[-2].fval) * (yyvsp[0].fval); }
-#line 1383 "parser.cpp"
-    break;
-
-  case 12:
-#line 47 "parser.y"
-                                                         { (yyval.fval) = (yyvsp[-2].fval) / (yyvsp[0].fval); }
-#line 1389 "parser.cpp"
-    break;
-
-  case 13:
-#line 48 "parser.y"
-                                                         { (yyval.fval) = (yyvsp[-1].fval); }
-#line 1395 "parser.cpp"
-    break;
-
-  case 14:
-#line 49 "parser.y"
-                                                         { (yyval.fval) = (yyvsp[-2].ival) + (yyvsp[0].fval); }
-#line 1401 "parser.cpp"
-    break;
-
-  case 15:
-#line 50 "parser.y"
-                                                         { (yyval.fval) = (yyvsp[-2].ival) - (yyvsp[0].fval); }
-#line 1407 "parser.cpp"
-    break;
-
-  case 16:
-#line 51 "parser.y"
-                                                         { (yyval.fval) = (yyvsp[-2].ival) * (yyvsp[0].fval); }
-#line 1413 "parser.cpp"
-    break;
-
-  case 17:
-#line 52 "parser.y"
-                                                         { (yyval.fval) = (yyvsp[-2].ival) / (yyvsp[0].fval); }
-#line 1419 "parser.cpp"
-    break;
-
-  case 18:
-#line 53 "parser.y"
-                                                         { (yyval.fval) = (yyvsp[-2].fval) + (yyvsp[0].ival); }
-#line 1425 "parser.cpp"
-    break;
-
-  case 19:
-#line 54 "parser.y"
-                                                         { (yyval.fval) = (yyvsp[-2].fval) - (yyvsp[0].ival); }
-#line 1431 "parser.cpp"
-    break;
-
-  case 20:
-#line 55 "parser.y"
-                                                         { (yyval.fval) = (yyvsp[-2].fval) * (yyvsp[0].ival); }
-#line 1437 "parser.cpp"
-    break;
-
-  case 21:
-#line 56 "parser.y"
-                                                         { (yyval.fval) = (yyvsp[-2].fval) / (yyvsp[0].ival); }
-#line 1443 "parser.cpp"
-    break;
-
-  case 22:
-#line 57 "parser.y"
-                                                         { (yyval.fval) = (yyvsp[-2].ival) / (float)(yyvsp[0].ival); }
-#line 1449 "parser.cpp"
-    break;
-
-  case 23:
-#line 60 "parser.y"
-                                                { (yyval.ival) = (yyvsp[0].ival); }
-#line 1455 "parser.cpp"
-    break;
-
-  case 24:
-#line 61 "parser.y"
-                                                { (yyval.ival) = (yyvsp[-2].ival) + (yyvsp[0].ival); }
-#line 1461 "parser.cpp"
-    break;
-
-  case 25:
-#line 62 "parser.y"
-                                                { (yyval.ival) = (yyvsp[-2].ival) - (yyvsp[0].ival); }
-#line 1467 "parser.cpp"
-    break;
-
-  case 26:
-#line 63 "parser.y"
-                                                { (yyval.ival) = (yyvsp[-2].ival) * (yyvsp[0].ival); }
-#line 1473 "parser.cpp"
-    break;
-
-  case 27:
-#line 64 "parser.y"
-                                                { (yyval.ival) = (yyvsp[-1].ival); }
-#line 1479 "parser.cpp"
+  case 2:
+#line 32 "parser.y"
+             {
+              /* Print out HTML structure of script file before parsing log file to Javascript. */
+			  printf("<!doctype html>\n<html>\n<head>\n");
+              printf("<title>Horizontal Bar Chart</title>\n");
+			  printf("<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js' integrity='sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=' crossorigin='anonymous'></script>\n");
+              printf("<script src='https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.min.js'></script>");
+			  printf("<script src='js/utils.js'></script>\n");
+			  printf("<style>"
+			  "\ncanvas{"
+				"-moz-user-select: none;"
+				"-webkit-user-select: none;"
+				"-ms-user-select: none;"
+				"}"
+			  "</style>\n");
+			  printf("</head>\n");
+			  printf("<body>"
+				     "<div style='width:75%;'>"
+					 "<canvas id='canvas'></canvas>"
+					 "</div>"
+					 "<br><br>"
+					 "<button id='randomizeData'>Randomize Data</button>"
+					"<button id='addDataset'>Add Dataset</button>"
+					"<button id='removeDataset'>Remove Dataset</button>"
+				    "<button id='addData'>Add Data</button>"
+					"<button id='removeData'>Remove Data</button>");
+			  }
+#line 1342 "parser.cpp"
     break;
 
 
-#line 1483 "parser.cpp"
+#line 1346 "parser.cpp"
 
       default: break;
     }
@@ -1711,7 +1574,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 67 "parser.y"
+#line 93 "parser.y"
 
 
 int main() {

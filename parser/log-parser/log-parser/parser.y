@@ -26,11 +26,42 @@ void yyerror(const char* s);
 %type<ival> expression
 %type<fval> mixed_expression
 
-%start calculation
+%start begin_parse
 
 %%
-
-calculation:
+begin_parse: {
+              /* Print out HTML structure of script file before parsing log file to Javascript. */
+			  printf("<!doctype html>\n<html>\n<head>\n");
+              printf("<title>Horizontal Bar Chart</title>\n");
+			  printf("<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js' integrity='sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=' crossorigin='anonymous'></script>\n");
+              printf("<script src='https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.min.js'></script>");
+			  printf("<script src='js/utils.js'></script>\n");
+			  printf("<style>"
+			  "\ncanvas{"
+				"-moz-user-select: none;"
+				"-webkit-user-select: none;"
+				"-ms-user-select: none;"
+				"}"
+			  "</style>\n");
+			  printf("</head>\n");
+			  printf("<body>"
+				     "<div style='width:75%;'>"
+					 "<canvas id='canvas'></canvas>"
+					 "</div>"
+					 "<br><br>"
+					 "<button id='randomizeData'>Randomize Data</button>"
+					"<button id='addDataset'>Add Dataset</button>"
+					"<button id='removeDataset'>Remove Dataset</button>"
+				    "<button id='addData'>Add Data</button>"
+					"<button id='removeData'>Remove Data</button>");
+			  } 
+			  /*calculation*/ 
+			  {
+			  printf("\n</script>");
+			  printf("\n</body>");
+			  printf("\n</html>");
+			  }
+calculation: 
 	   | calculation line
 ;
 
