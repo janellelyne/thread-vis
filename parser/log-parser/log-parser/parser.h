@@ -49,29 +49,41 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    T_INT = 258,
-    T_FLOAT = 259,
-    T_PLUS = 260,
-    T_MINUS = 261,
-    T_MULTIPLY = 262,
-    T_DIVIDE = 263,
-    T_LEFT = 264,
-    T_RIGHT = 265,
-    T_NEWLINE = 266,
-    T_QUIT = 267
+    NUMBER = 258,
+    VARIABLE = 259,
+    STRINGLIT = 260,
+    QUIT = 261,
+    CREATED = 262,
+    ACTION = 263,
+    WAIT = 264,
+    DONE = 265,
+    NEWLINE = 266,
+    DOUBLE_DASH = 267
   };
 #endif
+/* Tokens.  */
+#define NUMBER 258
+#define VARIABLE 259
+#define STRINGLIT 260
+#define QUIT 261
+#define CREATED 262
+#define ACTION 263
+#define WAIT 264
+#define DONE 265
+#define NEWLINE 266
+#define DOUBLE_DASH 267
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 14 "parser.y"
+#line 13 "parser.y"
 
 	int ival;
 	float fval;
+	char * strval;
 
-#line 75 "parser.h"
+#line 87 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

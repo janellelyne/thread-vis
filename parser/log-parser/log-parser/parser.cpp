@@ -75,10 +75,9 @@
 extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
-
 void yyerror(const char* s);
 
-#line 82 "parser.cpp"
+#line 81 "parser.cpp"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -126,16 +125,16 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    T_INT = 258,
-    T_FLOAT = 259,
-    T_PLUS = 260,
-    T_MINUS = 261,
-    T_MULTIPLY = 262,
-    T_DIVIDE = 263,
-    T_LEFT = 264,
-    T_RIGHT = 265,
-    T_NEWLINE = 266,
-    T_QUIT = 267
+    NUMBER = 258,
+    VARIABLE = 259,
+    STRINGLIT = 260,
+    QUIT = 261,
+    CREATED = 262,
+    ACTION = 263,
+    WAIT = 264,
+    DONE = 265,
+    NEWLINE = 266,
+    DOUBLE_DASH = 267
   };
 #endif
 
@@ -143,10 +142,11 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 14 "parser.y"
+#line 13 "parser.y"
 
 	int ival;
 	float fval;
+	char * strval;
 
 #line 152 "parser.cpp"
 
@@ -465,18 +465,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  2
+#define YYFINAL  4
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   0
+#define YYLAST   23
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  13
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  2
+#define YYNNTS  6
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  2
+#define YYNRULES  12
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  3
+#define YYNSTATES  24
 
 #define YYUNDEFTOK  2
 #define YYMAXUTOK   267
@@ -524,7 +524,8 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    32,    32
+       0,    30,    30,    30,    38,    39,    41,    42,    44,    45,
+      46,    48,    49
 };
 #endif
 
@@ -533,9 +534,10 @@ static const yytype_int8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "T_INT", "T_FLOAT", "T_PLUS", "T_MINUS",
-  "T_MULTIPLY", "T_DIVIDE", "T_LEFT", "T_RIGHT", "T_NEWLINE", "T_QUIT",
-  "$accept", "begin_parse", YY_NULLPTR
+  "$end", "error", "$undefined", "NUMBER", "VARIABLE", "STRINGLIT",
+  "QUIT", "CREATED", "ACTION", "WAIT", "DONE", "NEWLINE", "DOUBLE_DASH",
+  "$accept", "begin_parse", "$@1", "thread_actions", "thread_action",
+  "end_parse", YY_NULLPTR
 };
 #endif
 
@@ -549,7 +551,7 @@ static const yytype_int16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF (-1)
+#define YYPACT_NINF (-8)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -563,7 +565,9 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -1,     0,    -1
+       2,    -6,     8,     4,    -8,    -1,    -8,     1,     0,    -8,
+       3,    -8,    -8,     7,     1,     5,    -8,    10,     6,    -7,
+      -8,    -8,    -8,    -8
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -571,19 +575,21 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       2,     0,     1
+       0,     0,     0,     0,     1,     0,     2,    11,     0,    12,
+       3,     4,     6,     0,    11,     0,     5,     0,     0,     0,
+       7,     8,     9,    10
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -1,    -1
+      -8,    -8,    -8,    -8,     9,    -8
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     1
+      -1,     2,     7,    10,    11,    12
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -591,31 +597,39 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       2
+      20,    21,    22,    23,     8,     1,     3,     9,     4,     5,
+       6,    15,    13,     0,    14,    18,     0,    17,    19,     0,
+       0,     0,     0,    16
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0
+       7,     8,     9,    10,     3,     3,    12,     6,     0,     5,
+      11,     4,    12,    -1,    11,     5,    -1,    12,    12,    -1,
+      -1,    -1,    -1,    14
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    14,     0
+       0,     3,    14,    12,     0,     5,    11,    15,     3,     6,
+      16,    17,    18,    12,    11,     4,    17,    12,     5,    12,
+       7,     8,     9,    10
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    13,    14
+       0,    13,    15,    14,    16,    16,    17,    17,    17,    17,
+      17,    18,    18
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     0
+       0,     2,     0,     6,     1,     3,     1,     7,     7,     7,
+       7,     0,     1
 };
 
 
@@ -1311,38 +1325,30 @@ yyreduce:
   switch (yyn)
     {
   case 2:
-#line 32 "parser.y"
-             {
-              /* Print out HTML structure of script file before parsing log file to Javascript. */
-			  printf("<!doctype html>\n<html>\n<head>\n");
-              printf("<title>Horizontal Bar Chart</title>\n");
-			  printf("<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js' integrity='sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=' crossorigin='anonymous'></script>\n");
-              printf("<script src='https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.min.js'></script>");
-			  printf("<script src='js/utils.js'></script>\n");
-			  printf("<style>"
-			  "\ncanvas{"
-				"-moz-user-select: none;"
-				"-webkit-user-select: none;"
-				"-ms-user-select: none;"
-				"}"
-			  "</style>\n");
-			  printf("</head>\n");
-			  printf("<body>"
-				     "<div style='width:75%;'>"
-					 "<canvas id='canvas'></canvas>"
-					 "</div>"
-					 "<br><br>"
-					 "<button id='randomizeData'>Randomize Data</button>"
-					"<button id='addDataset'>Add Dataset</button>"
-					"<button id='removeDataset'>Remove Dataset</button>"
-				    "<button id='addData'>Add Data</button>"
-					"<button id='removeData'>Remove Data</button>");
+#line 30 "parser.y"
+                                                 {
+              /* Print out Javascript needed for functions. */
+			  printf("config.options.title.text = %s;", (yyvsp[-1].strval));
+			  printf("\n\n// array of functions\n"
+					 "var functions = [");
 			  }
+#line 1336 "parser.cpp"
+    break;
+
+  case 3:
+#line 36 "parser.y"
+                                         { printf("];\n\n"); }
 #line 1342 "parser.cpp"
     break;
 
+  case 7:
+#line 43 "parser.y"
+                                                         { printf("function() {newThread(); updateStatus(0)},") ;}
+#line 1348 "parser.cpp"
+    break;
 
-#line 1346 "parser.cpp"
+
+#line 1352 "parser.cpp"
 
       default: break;
     }
@@ -1574,15 +1580,55 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 93 "parser.y"
+#line 51 "parser.y"
 
 
 int main() {
 	yyin = stdin;
-
+	FILE *fptr; 
+  
+    char filename[100], c; 
+  
+  
+    // Open file 
+    errno_t err = fopen_s(&fptr, "pre-parse.txt", "r"); 
+    if (fptr == NULL) 
+    { 
+        printf("Cannot open file \n"); 
+        exit(0); 
+    } 
+  
+    // Read contents from file 
+    c = fgetc(fptr); 
+    while (c != EOF) 
+    { 
+        printf ("%c", c); 
+        c = fgetc(fptr); 
+    } 
+  
+    fclose(fptr); 
+   
 	do {
 		yyparse();
 	} while(!feof(yyin));
+
+	err = fopen_s(&fptr, "post-parse.txt", "r"); 
+    if (fptr == NULL) 
+    { 
+        printf("Cannot open file \n"); 
+        exit(0); 
+    } 
+  
+    // Read contents from file 
+    c = fgetc(fptr); 
+    while (c != EOF) 
+    { 
+        printf ("%c", c); 
+        c = fgetc(fptr); 
+    } 
+  
+    fclose(fptr); 
+
 
 	return 0;
 }

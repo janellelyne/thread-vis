@@ -11,16 +11,15 @@
 %%
 
 [ \t]	; // ignore all whitespace
-[0-9]+\.[0-9]+ 			{yylval.fval = atof(yytext); return T_FLOAT;}
-[0-9]+					{yylval.ival = atoi(yytext); return T_INT;}
-\n						{return T_NEWLINE;}
-"+"						{return T_PLUS;}
-"-"						{return T_MINUS;}
-"*"						{return T_MULTIPLY;}
-"/"						{return T_DIVIDE;}
-"("						{return T_LEFT;}
-")"						{return T_RIGHT;}
-"exit"					{return T_QUIT;}
-"quit"					{return T_QUIT;}
 
+\n						{return NEWLINE;}
+"--"				    {return DOUBLE_DASH;}
+"START"					{return CREATED;}
+"ACTION"				{return ACTION;}
+"WAIT"					{return WAIT;}
+"END"					{return DONE;}
+"DONE"					{return QUIT;}
+\"(\\.|[^"\\])*\"       {yylval.strval=strdup(yytext); return STRINGLIT; }
+[a-zA-Z][a-zA-Z0-9]+	{yylval.strval=strdup(yytext); return VARIABLE; }
+[0-9]+			 		{yylval.fval = atof(yytext); return NUMBER;}
 %%

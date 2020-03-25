@@ -1,23 +1,36 @@
 ﻿  Performing Custom Build Tools
-parser.y : warning : 4 nonterminals useless in grammar [-Wother]
-parser.y : warning : 26 rules useless in grammar [-Wother]
-  parser.y:59.1-11: warning: nonterminal useless in grammar: calculation [-Wother]
-     59 | calculation: 
-        | ^~~~~~~~~~~
-  parser.y:63.1-4: warning: nonterminal useless in grammar: line [-Wother]
-     63 | line: T_NEWLINE
-        | ^~~~
-  parser.y:69.1-16: warning: nonterminal useless in grammar: mixed_expression [-Wother]
-     69 | mixed_expression: T_FLOAT                 		 { $$ = $1; }
-        | ^~~~~~~~~~~~~~~~
-  parser.y:86.1-10: warning: nonterminal useless in grammar: expression [-Wother]
-     86 | expression: T_INT				{ $$ = $1; }
-        | ^~~~~~~~~~
+  parser.y:23.13-22: warning: symbol 'expression' is used, but is not defined as a token and has no rules; did you mean 'mixed_expression'? [-Wother]
+     23 | %type<ival> expression
+        |             ^~~~~~~~~~
+        |             mixed_expression
+  parser.y:24.13-28: warning: symbol 'mixed_expression' is used, but is not defined as a token and has no rules; did you mean 'expression'? [-Wother]
+     24 | %type<fval> mixed_expression
+        |             ^~~~~~~~~~~~~~~~
+        |             expression
+  parser.y:44.16-83: warning: type clash on default action: <strval> != <ival> [-Wother]
+     44 |              | NUMBER DOUBLE_DASH VARIABLE DOUBLE_DASH STRINGLIT DOUB...
+        |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  parser.y:45.16-81: warning: type clash on default action: <strval> != <ival> [-Wother]
+     45 |              | NUMBER DOUBLE_DASH VARIABLE DOUBLE_DASH STRINGLIT DOUB...
+        |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  parser.y:46.16-81: warning: type clash on default action: <strval> != <ival> [-Wother]
+     46 |              | NUMBER DOUBLE_DASH VARIABLE DOUBLE_DASH STRINGLIT DOUB...
+        |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  parser.y:48.11: warning: empty rule for typed nonterminal, and no action [-Wother]
+     48 | end_parse: 
+        |           ^
+parser.y : warning : 2 nonterminals useless in grammar [-Wother]
+  parser.y:23.13-22: warning: nonterminal useless in grammar: expression [-Wother]
+     23 | %type<ival> expression
+        |             ^~~~~~~~~~
+  parser.y:24.13-28: warning: nonterminal useless in grammar: mixed_expression [-Wother]
+     24 | %type<fval> mixed_expression
+        |             ^~~~~~~~~~~~~~~~
   Performing Custom Build Tools
   lexer.cpp
-C:\Users\Janelle\thread-vis\parser\log-parser\log-parser\lexer.l(14,20): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Janelle\thread-vis\parser\log-parser\log-parser\lexer.l(24,20): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   log-parser.cpp
   parser.cpp
-C:\Users\Janelle\thread-vis\parser\log-parser\log-parser\parser.y(47,13): warning C4476: 'printf' : unknown type field character ';' in format specifier
+C:\Users\Janelle\thread-vis\parser\log-parser\log-parser\parser.y(57,10): warning C4101: 'filename': unreferenced local variable
   Generating Code...
   log-parser.vcxproj -> C:\Users\Janelle\thread-vis\parser\log-parser\Debug\log-parser.exe

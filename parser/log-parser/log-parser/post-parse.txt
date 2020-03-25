@@ -1,0 +1,116 @@
+var status_increment = 100 / functions.length;
+var status_remain = 100 % functions.length;
+var progPercent = 0;
+
+// ADD function to the list of functions to be ran
+functions.push(function () { alert("Tool has finished tracing.")});
+
+
+		var colorNames = Object.keys(window.chartColors);
+	    function newThread() {
+	    	// Update Status Bar
+	    	document.getElementById("status-msg").innerHTML = "Thread " + config.data.datasets.length + " Has Been Created At Time "+ time;
+	    	document.getElementById("status-msg").attributes.class = "alert alert-dark"; 
+	        // Update Status Table
+	        document.getElementById("thread-table").innerHTML += "<tr id='thread" + config.data.datasets.length + "'>" +
+						"<td>" +
+						"<input disabled type='text' id='name" + config.data.datasets.length + 
+						"'  placeholder='Thread " + config.data.datasets.length + "' class='form-control'/>" +
+						"</td>" +
+						"<td>" +
+						"<input disabled type='text' id='status" + config.data.datasets.length + 
+						"' placeholder='Initialized' class='form-control'/>" +
+						"</td>" +
+						"<td>" +
+						"<input disabled type='text' id='detail" + config.data.datasets.length + 
+						"' placeholder='' class='form-control'/>" +
+						"</td></tr>";
+
+	    	config.data.labels.push(time);
+	    	pointCount.push(0);
+			var colorName = colorNames[config.data.datasets.length % colorNames.length];
+			var newColor = window.chartColors[colorName];
+			var newDataset = {
+				label: 'Thread ' + config.data.datasets.length,
+				data: [{x: time, y: pointStep++}],
+				
+					fill: false,
+					backgroundColor: color(newColor).alpha(0.5).rgbString(),
+					borderColor: newColor,
+					borderWidth: 10,
+					pointBackgroundColor: ["black", "green", "red", "green", "purple", "orange"],
+					pointRadius: 10,
+					pointStyle: ['star', 'circle', 'rect'],
+					pointHoverRadius: 20,				
+			 }	;	
+			
+			/*for (var index = 0; index < config.data.datasets.length; ++index) {
+					if (typeof config.data.datasets[index].data[0] === 'object') {
+						config.data.datasets[index].data.push({x: time, y: index});
+					} else {
+						config.data.datasets[index].data.push();
+					}
+				}
+			window.myLine.update();
+			*/
+			config.data.datasets.push(newDataset);
+			window.myLine.update();
+			time++;
+		};
+		function performFunction(newX, changedIndex) {
+				// Update status bar and table
+				document.getElementById("status-msg").innerHTML = "Thread " + changedIndex + " Is Working On Function: At Time " + time;
+	    	    document.getElementById("status-msg").attributes.class = "alert alert-success"; 
+	    	    var name = "status" + changedIndex;
+	    	    document.getElementById(name).setAttribute("placeholder", "Performing Function");
+
+ 				//config.data.datasets[changedIndex]['pointBackgroundColor'] = 'green';
+ 				//config.data.datasets[changedIndex]['pointStyle'] = 'circle';
+				config.data.datasets[changedIndex].data.push({x: newX, y: changedIndex+1});	
+				config.data.labels.push(time);
+		    	window.myLine.update();
+		    	time++;
+		    	//alert("Perform FUnction!");
+		};
+
+
+		function updateStatus(lastFunc){
+			// Update Progress Bar
+			if(lastFunc == 0){
+			   progPercent = progPercent + status_increment;
+			   document.getElementById("progress-bar").innerHTML = progPercent + "%";
+		       document.getElementById("progress-bar").setAttribute("aria-valuenow", progPercent);
+		       document.getElementById("progress-bar").setAttribute("style", "width:" + progPercent + "%");
+			}
+			else{
+				progPercent = progPercent + status_remain + status_increment;
+			   document.getElementById("progress-bar").innerHTML = progPercent + "%";
+		       document.getElementById("progress-bar").setAttribute("aria-valuenow", progPercent);
+		       document.getElementById("progress-bar").setAttribute("style", "width:" + progPercent + "%");
+			}
+		}
+		
+     // RUN FUNCTIONS FORWARD
+     // detect the click for first button
+     anchors.onclick = function() {    
+    // call the functions using i variable
+    if (i < functions.length) {
+        // increment i
+        functions[++i]();
+       // alert("i:" + i);
+    }
+    else {
+        functions[3]();
+    }
+    }
+
+    // RESET CHART
+     anchors1.onclick = function() {  
+	 time = 0;
+	 i=0;
+     location.reload();
+    }
+	</script>
+</body>
+
+</html>

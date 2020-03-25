@@ -1,0 +1,327 @@
+<!doctype html>
+<html>
+
+<head>
+      <title>Horizontal Bar Chart</title>
+      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.min.js"></script>
+      <script src="js/utils.js"></script>
+      <style>
+      canvas{
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+      }
+      body{
+      	background-color: #dee2e6;
+      }
+      h4{
+      	color: #495057;
+      	font-size: 100%;
+      }
+      div{
+      	background-color: white;
+      }
+      .fa-line-chart{
+      	float:right;
+      	margin-top: 10px;
+      	color: #17a2b8;
+      }
+      .tooltiptext {
+	  visibility: hidden;
+	  width: 120px;
+	  background-color: black;
+	  color: #fff;
+	  text-align: center;
+	  padding: 5px 0;
+	  border-radius: 6px;
+	  position: absolute;
+      z-index: 1;
+	}
+      .fa-line-chart:hover {
+       color: grey;
+     }
+     .fa-line-chart:hover .tooltiptext {
+         visibility: visible;
+     }
+     
+      .container{
+       margin-top: 3%;
+      }
+      .progress{
+      	width: 100%;
+	    border-color: black;
+	    border-style: solid;
+	    margin: 5px;
+	    border-width: thin;
+      }
+ 
+      #status{
+      	border-top: 2px solid #dee2e6;
+      	margin-top:20px;
+      	padding-top: 10px;
+
+      }
+      </style>
+</head>
+
+<body>
+	<div class="container">
+		<i id="help-tip" class="fa fa-line-chart fa-lg">
+			<span class="tooltiptext">
+				<p>Chart Key</p>
+				<p><i class="fa fa-star" aria-hidden="true"></i></p>
+				<p><i class="fa fa-circle" aria-hidden="true"></i></p>
+				<p><i class="fa fa-square" aria-hidden="true"></i></p>
+				<p><i class="fa fa-caret-up" aria-hidden="true"></i></p>
+			</span>
+		</i>
+  <div class="row justify-content-md-center">
+	<div style="width:85%;">
+		<canvas id="canvas"></canvas>
+	</div>
+	<nav class="navbar navbar-light bg-light" style="width:85%;">
+  	<button class="btn btn-outline-info my-2 my-sm-0" id="NewButton"><i class="fa fa-caret-square-o-right" aria-hidden="true"></i> Trace</button>
+	<button class="btn btn-outline-info my-2 my-sm-0" id="BackButton"><i class="fa fa-refresh" aria-hidden="true"></i> Clear Chart</button>
+    </nav>
+</div>
+<div id="status" class="row justify-content-md-center">
+	<h4>Trace Status</h4>
+	<div class="progress" style="width:100%;">
+  <div id="progress-bar" class="progress-bar progress-bar-striped active" role="progressbar"
+  aria-valuenow="0%" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
+    0%
+  </div>
+</div>
+<div id="status-msg" class="alert alert-info" role="alert" style="width:100%;">
+  Click Trace to begin program.
+</div>
+<table class="table table-bordered" id="tab_logic">
+				<thead>
+					<tr >
+						<th class="text-center">
+							Thread Name
+						</th>
+						<th class="text-center">
+							Status
+						</th>
+						<th class="text-center">
+							Detail
+						</th>
+					</tr>
+				</thead>
+				<tbody id='thread-table'>					
+				</tbody>
+			</table>
+	</div>
+</div>
+	<script>
+		var timeFormat = 'MM/DD/YYYY HH:mm';
+
+		function newDate(days) {
+			return moment().add(days, 'd').toDate();
+		}
+
+		function newDateString(days) {
+			return moment().add(days, 'd').format(timeFormat);
+		}
+
+		var color = Chart.helpers.color;
+		var config = {
+			type: 'line',
+			
+			options: {
+                        legend: {
+                                 display: true,
+                                 position: 'right',
+                                 
+                                 labels: {padding: 20,
+                boxWidth: 30,
+                fillColor:'#dee2e6' 
+            }
+
+                            },
+                        responsive: true,
+                        title: {
+                              display: true,
+                              text: 'Thread Trace Chart',
+                              fontSize: 28,
+                              padding: 20
+                        },
+                        tooltips: {
+                              mode: 'x',
+                              intersect: false,
+                        },
+                        hover: {
+                              mode: 'x',
+                              intersect: false
+                        },
+				scales: {
+					xAxes: [{
+								 ticks: {
+				
+                min: 0,
+                stepSize: 0.5
+            },
+						scaleLabel: {
+							display: true,
+							labelString: 'Time'
+						}
+					}],
+					yAxes: [{
+						scaleLabel: {
+							display: true,
+							labelString: 'Thread Count'
+						},
+						ticks: {
+
+                min: 0,
+                stepSize: 0.5
+            },
+					}]
+				},
+			}
+		};
+
+		window.onload = function() {
+			var ctx = document.getElementById('canvas').getContext('2d');
+			window.myLine = new Chart(ctx, config);
+
+		};
+// Global Functions For Execution		
+// all buttons
+var anchors = document.getElementById('NewButton');
+var anchors1 = document.getElementById('BackButton');
+// the UNIVERSAL counter for stepping through the function
+var i = -1;
+// Time counter
+var time = 0;
+var pointStep = 1;
+// Point counter for each thread
+var pointCount = [];
+// Last thread worked on
+
+
+config.options.title.text = "Bank Program";
+
+// array of functions
+var functions = [function() {newThread(); updateStatus(0)},];
+
+var status_increment = 100 / functions.length;
+var status_remain = 100 % functions.length;
+var progPercent = 0;
+
+// ADD function to the list of functions to be ran
+functions.push(function () { alert("Tool has finished tracing.")});
+
+
+		var colorNames = Object.keys(window.chartColors);
+	    function newThread() {
+	    	// Update Status Bar
+	    	document.getElementById("status-msg").innerHTML = "Thread " + config.data.datasets.length + " Has Been Created At Time "+ time;
+	    	document.getElementById("status-msg").attributes.class = "alert alert-dark"; 
+	        // Update Status Table
+	        document.getElementById("thread-table").innerHTML += "<tr id='thread" + config.data.datasets.length + "'>" +
+						"<td>" +
+						"<input disabled type='text' id='name" + config.data.datasets.length + 
+						"'  placeholder='Thread " + config.data.datasets.length + "' class='form-control'/>" +
+						"</td>" +
+						"<td>" +
+						"<input disabled type='text' id='status" + config.data.datasets.length + 
+						"' placeholder='Initialized' class='form-control'/>" +
+						"</td>" +
+						"<td>" +
+						"<input disabled type='text' id='detail" + config.data.datasets.length + 
+						"' placeholder='' class='form-control'/>" +
+						"</td></tr>";
+
+	    	config.data.labels.push(time);
+	    	pointCount.push(0);
+			var colorName = colorNames[config.data.datasets.length % colorNames.length];
+			var newColor = window.chartColors[colorName];
+			var newDataset = {
+				label: 'Thread ' + config.data.datasets.length,
+				data: [{x: time, y: pointStep++}],
+				
+					fill: false,
+					backgroundColor: color(newColor).alpha(0.5).rgbString(),
+					borderColor: newColor,
+					borderWidth: 10,
+					pointBackgroundColor: ["black", "green", "red", "green", "purple", "orange"],
+					pointRadius: 10,
+					pointStyle: ['star', 'circle', 'rect'],
+					pointHoverRadius: 20,				
+			 }	;	
+			
+			/*for (var index = 0; index < config.data.datasets.length; ++index) {
+					if (typeof config.data.datasets[index].data[0] === 'object') {
+						config.data.datasets[index].data.push({x: time, y: index});
+					} else {
+						config.data.datasets[index].data.push();
+					}
+				}
+			window.myLine.update();
+			*/
+			config.data.datasets.push(newDataset);
+			window.myLine.update();
+			time++;
+		};
+		function performFunction(newX, changedIndex) {
+				// Update status bar and table
+				document.getElementById("status-msg").innerHTML = "Thread " + changedIndex + " Is Working On Function: At Time " + time;
+	    	    document.getElementById("status-msg").attributes.class = "alert alert-success"; 
+	    	    var name = "status" + changedIndex;
+	    	    document.getElementById(name).setAttribute("placeholder", "Performing Function");
+
+ 				//config.data.datasets[changedIndex]['pointBackgroundColor'] = 'green';
+ 				//config.data.datasets[changedIndex]['pointStyle'] = 'circle';
+				config.data.datasets[changedIndex].data.push({x: newX, y: changedIndex+1});	
+				config.data.labels.push(time);
+		    	window.myLine.update();
+		    	time++;
+		    	//alert("Perform FUnction!");
+		};
+
+
+		function updateStatus(lastFunc){
+			// Update Progress Bar
+			if(lastFunc == 0){
+			   progPercent = progPercent + status_increment;
+			   document.getElementById("progress-bar").innerHTML = progPercent + "%";
+		       document.getElementById("progress-bar").setAttribute("aria-valuenow", progPercent);
+		       document.getElementById("progress-bar").setAttribute("style", "width:" + progPercent + "%");
+			}
+			else{
+				progPercent = progPercent + status_remain + status_increment;
+			   document.getElementById("progress-bar").innerHTML = progPercent + "%";
+		       document.getElementById("progress-bar").setAttribute("aria-valuenow", progPercent);
+		       document.getElementById("progress-bar").setAttribute("style", "width:" + progPercent + "%");
+			}
+		}
+		
+     // RUN FUNCTIONS FORWARD
+     // detect the click for first button
+     anchors.onclick = function() {    
+    // call the functions using i variable
+    if (i < functions.length) {
+        // increment i
+        functions[++i]();
+       // alert("i:" + i);
+    }
+    else {
+        functions[3]();
+    }
+    }
+
+    // RESET CHART
+     anchors1.onclick = function() {  
+	 time = 0;
+	 i=0;
+     location.reload();
+    }
+	</script>
+</body>
+
+</html>

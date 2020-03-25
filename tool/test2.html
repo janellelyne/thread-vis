@@ -3,6 +3,8 @@
 
 <head>
       <title>Horizontal Bar Chart</title>
+      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=" crossorigin="anonymous"></script>
       <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.min.js"></script>
       <script src="js/utils.js"></script>
@@ -12,21 +14,64 @@
             -webkit-user-select: none;
             -ms-user-select: none;
       }
+      body{
+      	background-color: #dee2e6;
+      }
+      h4{
+      	color: #495057;
+      	font-size: 100%;
+      }
+      div{
+      	background-color: white;
+      }
+      
+      .container{
+       margin-top: 3%;
+      }
+      .progress{
+      	width: 100%;
+    border-color: black;
+    border-style: solid;
+    margin: 5px;
+    border-width: thin;
+      }
+      #status{
+      	border-top: 2px solid #dee2e6;
+      	margin-top:20px;
+      	padding-top: 10px;
+
+      }
       </style>
 </head>
 
-
 <body>
-	<div style="width:75%;">
+	<div class="container">
+  <div class="row justify-content-md-center">
+    
+	<div style="width:85%;">
 		<canvas id="canvas"></canvas>
 	</div>
-	<br>
-	<br>
-	<button id="randomizeData">Randomize Data</button>
-	<button id="addDataset">Add Dataset</button>
-	<button id="removeDataset">Remove Dataset</button>
-	<button id="addData">Add Data</button>
-	<button id="removeData">Remove Data</button>
+	<nav class="navbar navbar-light bg-light" style="width:85%;">
+  	<button class="btn btn-outline-info my-2 my-sm-0" id="NewButton"><i class="fa fa-caret-square-o-right" aria-hidden="true"></i> Trace</button>
+	<button class="btn btn-outline-info my-2 my-sm-0" id="BackButton"><i class="fa fa-refresh" aria-hidden="true"></i> Clear Chart</button>
+    </nav>
+</div>
+<div id="status" class="row justify-content-md-center">
+	<h4>Trace Status</h4>
+	<div class="progress" style="width:100%;">
+  <div class="progress-bar progress-bar-striped active" role="progressbar"
+  aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%;">
+    100%
+  </div>
+</div>
+<div class="alert alert-info" role="alert" style="width:100%;">
+  Thread trace status will go here!
+</div>
+	</div>
+</div>
+
+	
+
 	<script>
 		var timeFormat = 'MM/DD/YYYY HH:mm';
 
@@ -41,75 +86,24 @@
 		var color = Chart.helpers.color;
 		var config = {
 			type: 'line',
-			data: {
-				labels: [ // Date Objects
-					newDate(0),
-					newDate(1),
-					newDate(2),
-					newDate(3),
-					newDate(4),
-					newDate(5),
-					newDate(6)
-				],
-				datasets: [{
-					label: 'My First dataset',
-					backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
-					borderColor: window.chartColors.red,
-					fill: false,
-					data: [{
-						x: 0,
-						y: 1
-					}
-					],
-				}, {
-					label: 'My Second dataset',
-					backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-					borderColor: window.chartColors.blue,
-					fill: false,
-					data: [{
-						x: 0,
-						y: 2
-					}
-					],
-				}, {
-					label: 'My Third dataset',
-					backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-					borderColor: window.chartColors.blue,
-					fill: false,
-					data: [{
-						x: 0,
-						y: 3
-					}
-					],
-				},{
-					label: 'Dataset with point data',
-					backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
-					borderColor: window.chartColors.green,
-					fill: false,
-					data: [{
-						x: newDateString(0),
-						y: 4
-					}, {
-						x: newDateString(5),
-						y: 4
-					}, {
-						x: newDateString(7),
-						y: 4
-					}, {
-						x: newDateString(15),
-						y: 4
-					}],
-				}]
-			},
+			
 			options: {
-                           legend: {
-                                     display: true,
-                                     position: 'right'
+                        legend: {
+                                 display: true,
+                                 position: 'right',
+                                 
+                                 labels: {padding: 20,
+                boxWidth: 30,
+                fillColor:'#dee2e6' 
+            }
+
                             },
                         responsive: true,
                         title: {
                               display: true,
-                              text: 'Thread Trace Chart'
+                              text: 'Thread Trace Chart',
+                              fontSize: 28,
+                              padding: 20
                         },
                         tooltips: {
                               mode: 'index',
@@ -120,24 +114,28 @@
                               intersect: true
                         },
 				scales: {
-					x: {
-						type: 'time',
-						time: {
-							parser: timeFormat,
-							// round: 'day'
-							tooltipFormat: 'll HH:mm'
+					xAxes: [{
+								 ticks: {
+				
+                min: 0,
+                stepSize: 0.5
+            },
+						scaleLabel: {
+							display: true,
+							labelString: 'Time'
+						}
+					}],
+					yAxes: [{
+						scaleLabel: {
+							display: true,
+							labelString: 'Thread Count'
 						},
-						scaleLabel: {
-							display: true,
-							labelString: 'Date'
-						}
-					},
-					y: {
-						scaleLabel: {
-							display: true,
-							labelString: 'Threads'
-						}
-					}
+						ticks: {
+
+                min: 0,
+                stepSize: 0.5
+            },
+					}]
 				},
 			}
 		};
@@ -148,72 +146,138 @@
 
 		};
 
-		document.getElementById('randomizeData').addEventListener('click', function() {
-			config.data.datasets.forEach(function(dataset) {
-				dataset.data.forEach(function(dataObj, j) {
-					if (typeof dataObj === 'object') {
-						dataObj.y = randomScalingFactor();
-					} else {
-						dataset.data[j] = randomScalingFactor();
-					}
-				});
-			});
+// array of functions
+var functions = [
+    function() {newThread()},
+    function () { newThread() },
+    function () { newThread() },
+    function () { performFunction(time, 0) },
+    function () { performFunction(time, 1) },
+    function () { newThread() },
+    function () { newThread() },
+    function () { performFunction(time, 0) },
+    function () { performFunction(time, 1) },
+    function () { newThread() },
+];
 
-			window.myLine.update();
-		});
+// all buttons
+var anchors = document.getElementById('NewButton');
+var anchors1 = document.getElementById('BackButton');
+// the UNIVERSAL counter for stepping through the function
+var i = -1;
+// Time counter
+var time = 0;
+var pointStep = 1;
+// Point counter for each thread
+var pointCount = [];
+// ADD function to the list of functions to be ran
+functions.push(function () { alert("Clicked more than three times.")});
+
 
 		var colorNames = Object.keys(window.chartColors);
+	    function newThread() {
+	    	config.data.labels.push(time);
+	    	pointCount.push(0);
+			var colorName = colorNames[config.data.datasets.length % colorNames.length];
+			var newColor = window.chartColors[colorName];
+			var newDataset = {
+				label: 'Thread ' + config.data.datasets.length,
+				data: [{x: time, y: pointStep++}],
+				
+					fill: false,
+					backgroundColor: color(newColor).alpha(0.5).rgbString(),
+					borderColor: newColor,
+					borderWidth: 10,
+					pointBackgroundColor: ["black", "green", "red", "green", "purple", "orange"],
+					pointRadius: 10,
+					pointStyle: ['star', 'circle', 'rect'],
+					pointHoverRadius: 20,				
+			 }	;	
+			
+			/*for (var index = 0; index < config.data.datasets.length; ++index) {
+					if (typeof config.data.datasets[index].data[0] === 'object') {
+						config.data.datasets[index].data.push({x: time, y: index});
+					} else {
+						config.data.datasets[index].data.push();
+					}
+				}
+			window.myLine.update();
+			*/
+			config.data.datasets.push(newDataset);
+			window.myLine.update();
+			time++;
+		};
+		function performFunction(newX, changedIndex) {
+				config.data.datasets[changedIndex].data.push({x: newX, y: changedIndex+1});	
+				config.data.labels.push(time);
+		    	window.myLine.update();
+		    	time++;
+		    	//alert("Perform FUnction!");
+		};
+		/*
 		document.getElementById('addDataset').addEventListener('click', function() {
 			var colorName = colorNames[config.data.datasets.length % colorNames.length];
 			var newColor = window.chartColors[colorName];
 			var newDataset = {
 				label: 'Dataset ' + config.data.datasets.length,
 				borderColor: newColor,
+				borderWidth: 10,
+				fill: false,
 				backgroundColor: color(newColor).alpha(0.5).rgbString(),
 				data: [],
 			};
-
 			for (var index = 0; index < config.data.labels.length; ++index) {
 				newDataset.data.push(randomScalingFactor());
 			}
-
 			config.data.datasets.push(newDataset);
 			window.myLine.update();
 		});
-
 		document.getElementById('addData').addEventListener('click', function() {
 			if (config.data.datasets.length > 0) {
 				config.data.labels.push(newDate(config.data.labels.length));
-
 				for (var index = 0; index < config.data.datasets.length; ++index) {
 					if (typeof config.data.datasets[index].data[0] === 'object') {
 						config.data.datasets[index].data.push({
-							x: newDate(config.data.datasets[index].data.length),
+							x: newDate(config.data.datasets[0].data.length + 2),
 							y: randomScalingFactor(),
 						});
 					} else {
 						config.data.datasets[index].data.push(randomScalingFactor());
 					}
 				}
-
 				window.myLine.update();
 			}
 		});
-
 		document.getElementById('removeDataset').addEventListener('click', function() {
 			config.data.datasets.splice(0, 1);
 			window.myLine.update();
 		});
-
-		document.getElementById('removeData').addEventListener('click', function() {
+		function removeData() {
 			config.data.labels.splice(-1, 1); // remove the label first
-
 			config.data.datasets.forEach(function(dataset) {
 				dataset.data.pop();
 			});
-
 			window.myLine.update();
-		});
+		};
+     */
+     // RUN FUNCTIONS FORWARD
+     // detect the click for first button
+     anchors.onclick = function() {    
+    // call the functions using i variable
+    if (i < 10) {
+        // increment i
+        functions[++i]();
+       // alert("i:" + i);
+    }
+    else {
+        functions[3]();
+    }
+    }
+
+    // RESET CHART
+     anchors1.onclick = function() {    
+     location.reload();
+    }
 	</script>
 </body>
 
