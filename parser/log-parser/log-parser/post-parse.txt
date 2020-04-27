@@ -7,23 +7,25 @@ functions.push(function () { alert("Tool has finished tracing.")});
 
 
 		var colorNames = Object.keys(window.chartColors);
-	    function newThread() {
+	    function newThread(threadName, details, time) {
+	    	// Add new thread to thread name array
+	    	Threads.push(threadName);
 	    	// Update Status Bar
-	    	document.getElementById("status-msg").innerHTML = "Thread " + config.data.datasets.length + " Has Been Created At Time "+ time;
+	    	document.getElementById("status-msg").innerHTML = threadName + " Has Been Created At Time "+ time + " ns";
 	    	document.getElementById("status-msg").attributes.class = "alert alert-dark"; 
 	        // Update Status Table
 	        document.getElementById("thread-table").innerHTML += "<tr id='thread" + config.data.datasets.length + "'>" +
 						"<td>" +
 						"<input disabled type='text' id='name" + config.data.datasets.length + 
-						"'  placeholder='Thread " + config.data.datasets.length + "' class='form-control'/>" +
+						"'  placeholder='" + threadName + "' class='form-control'/>" +
 						"</td>" +
 						"<td>" +
 						"<input disabled type='text' id='status" + config.data.datasets.length + 
-						"' placeholder='Initialized' class='form-control'/>" +
+						"' placeholder='Created' class='form-control'/>" +
 						"</td>" +
 						"<td>" +
 						"<input disabled type='text' id='detail" + config.data.datasets.length + 
-						"' placeholder='' class='form-control'/>" +
+						"' placeholder='" + details + "' class='form-control'/>" +
 						"</td></tr>";
 
 	    	config.data.labels.push(time);
@@ -31,7 +33,7 @@ functions.push(function () { alert("Tool has finished tracing.")});
 			var colorName = colorNames[config.data.datasets.length % colorNames.length];
 			var newColor = window.chartColors[colorName];
 			var newDataset = {
-				label: 'Thread ' + config.data.datasets.length,
+				label: threadName,
 				data: [{x: time, y: pointStep++}],
 				
 					fill: false,
@@ -43,42 +45,33 @@ functions.push(function () { alert("Tool has finished tracing.")});
 					pointStyle: ['star', 'circle', 'rect'],
 					pointHoverRadius: 20,				
 			 }	;	
-			
-			/*for (var index = 0; index < config.data.datasets.length; ++index) {
-					if (typeof config.data.datasets[index].data[0] === 'object') {
-						config.data.datasets[index].data.push({x: time, y: index});
-					} else {
-						config.data.datasets[index].data.push();
-					}
-				}
-			window.myLine.update();
-			*/
+					
 			config.data.datasets.push(newDataset);
 			window.myLine.update();
-			time++;
+			
 		};
-		function performFunction(newX, changedIndex) {
+		function performFunction(threadName, details, time, action) {
+
+			    var changedIndex = Threads.indexOf(threadName);
 				// Update status bar and table
-				document.getElementById("status-msg").innerHTML = "Thread " + changedIndex + " Is Working On Function: At Time " + time;
+				document.getElementById("status-msg").innerHTML = threadName + " " + details + " at: " + time + " ns";
 	    	    document.getElementById("status-msg").attributes.class = "alert alert-success"; 
 	    	    var name = "status" + changedIndex;
-	    	    document.getElementById(name).setAttribute("placeholder", "Performing Function");
-
+	    	    document.getElementById(name).setAttribute("placeholder", action);
+	    	    var detail = "detail" + changedIndex;
+	    	    document.getElementById(detail).setAttribute("placeholder", details);
  				//config.data.datasets[changedIndex]['pointBackgroundColor'] = 'green';
  				//config.data.datasets[changedIndex]['pointStyle'] = 'circle';
-				config.data.datasets[changedIndex].data.push({x: newX, y: changedIndex+1});	
+				config.data.datasets[changedIndex].data.push({x: time, y: changedIndex+1});	
 				config.data.labels.push(time);
 		    	window.myLine.update();
-		    	time++;
-		    	//alert("Perform FUnction!");
 		};
-
 
 		function updateStatus(lastFunc){
 			// Update Progress Bar
 			if(lastFunc == 0){
 			   progPercent = progPercent + status_increment;
-			   document.getElementById("progress-bar").innerHTML = progPercent + "%";
+			   document.getElementById("progress-bar").innerHTML = Math.round(progPercent) + "%";
 		       document.getElementById("progress-bar").setAttribute("aria-valuenow", progPercent);
 		       document.getElementById("progress-bar").setAttribute("style", "width:" + progPercent + "%");
 			}
@@ -100,7 +93,7 @@ functions.push(function () { alert("Tool has finished tracing.")});
        // alert("i:" + i);
     }
     else {
-        functions[3]();
+        functions[functions.length -1]();
     }
     }
 

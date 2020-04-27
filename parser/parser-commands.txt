@@ -1,5 +1,5 @@
 win_flex --wincompat lexer.l
-win_bison -dy parser.y
+win_bison -dy -Wno-yacc parser.y
 
 compile program:
 cl log-parser.cpp parser.cpp lexer.cpp

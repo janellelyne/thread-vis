@@ -2,7 +2,7 @@
 <html>
 
 <head>
-      <title>Horizontal Bar Chart</title>
+      <title>Thread Chart Tool</title>
       <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=" crossorigin="anonymous"></script>
@@ -29,13 +29,17 @@
       	margin-top: 10px;
       	color: #17a2b8;
       }
+      p {
+      	font-size: 70%;
+      }
       .tooltiptext {
 	  visibility: hidden;
 	  width: 120px;
-	  background-color: black;
+	  background-color: gray;
 	  color: #fff;
-	  text-align: center;
-	  padding: 5px 0;
+	  text-align: left;
+	  font-family: Arial;
+	  padding-left: 10px;
 	  border-radius: 6px;
 	  position: absolute;
       z-index: 1;
@@ -71,11 +75,11 @@
 	<div class="container">
 		<i id="help-tip" class="fa fa-line-chart fa-lg">
 			<span class="tooltiptext">
-				<p>Chart Key</p>
-				<p><i class="fa fa-star" aria-hidden="true"></i></p>
-				<p><i class="fa fa-circle" aria-hidden="true"></i></p>
-				<p><i class="fa fa-square" aria-hidden="true"></i></p>
-				<p><i class="fa fa-caret-up" aria-hidden="true"></i></p>
+				<h5>Chart Key</h5>
+				<p><i class="fa fa-star" aria-hidden="true"></i> - Thread Creation</p>
+				<p><i class="fa fa-circle" aria-hidden="true"></i> - Performing Action</p>
+				<p><i class="fa fa-square" aria-hidden="true"></i> - Waiting</p>
+				<p><i class="fa fa-caret-up" aria-hidden="true"></i> - Done</p>
 			</span>
 		</i>
   <div class="row justify-content-md-center">
@@ -197,10 +201,11 @@ var anchors1 = document.getElementById('BackButton');
 // the UNIVERSAL counter for stepping through the function
 var i = -1;
 // Time counter
-var time = 0;
+var time1 = 5788655;
 var pointStep = 1;
 // Point counter for each thread
 var pointCount = [];
 // Last thread worked on
+config.options.title.text = "New Title";
 
-
+var Threads = [];

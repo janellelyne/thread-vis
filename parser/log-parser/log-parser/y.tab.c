@@ -478,7 +478,7 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  4
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   23
+#define YYLAST   24
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  13
@@ -535,8 +535,8 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    30,    30,    30,    38,    39,    41,    42,    44,    45,
-      46,    48,    49
+       0,    30,    30,    30,    38,    39,    41,    42,    43,    44,
+      45,    47,    48
 };
 #endif
 
@@ -576,8 +576,8 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-       2,    -6,     8,     4,    -8,    -1,    -8,     1,     0,    -8,
-       3,    -8,    -8,     7,     1,     5,    -8,    10,     6,    -7,
+       2,    -6,     8,     5,    -8,    -1,    -8,     1,     0,    -8,
+       3,    -8,    -8,     7,     1,     4,    -8,     9,     6,    -7,
       -8,    -8,    -8,    -8
 };
 
@@ -594,7 +594,7 @@ static const yytype_int8 yydefact[] =
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -8,    -8,    -8,    -8,     9,    -8
+      -8,    -8,    -8,    -8,    10,    -8
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
@@ -609,23 +609,23 @@ static const yytype_int8 yydefgoto[] =
 static const yytype_int8 yytable[] =
 {
       20,    21,    22,    23,     8,     1,     3,     9,     4,     5,
-       6,    15,    13,     0,    14,    18,     0,    17,    19,     0,
-       0,     0,     0,    16
+       6,    15,    13,    18,    14,     0,    17,     0,    19,     0,
+       0,     0,     0,     0,    16
 };
 
 static const yytype_int8 yycheck[] =
 {
-       7,     8,     9,    10,     3,     3,    12,     6,     0,     5,
-      11,     4,    12,    -1,    11,     5,    -1,    12,    12,    -1,
-      -1,    -1,    -1,    14
+       7,     8,     9,    10,     3,     3,    12,     6,     0,     4,
+      11,     4,    12,     4,    11,    -1,    12,    -1,    12,    -1,
+      -1,    -1,    -1,    -1,    14
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,    14,    12,     0,     5,    11,    15,     3,     6,
-      16,    17,    18,    12,    11,     4,    17,    12,     5,    12,
+       0,     3,    14,    12,     0,     4,    11,    15,     3,     6,
+      16,    17,    18,    12,    11,     4,    17,    12,     4,    12,
        7,     8,     9,    10
 };
 
@@ -1337,9 +1337,9 @@ yyreduce:
     {
   case 2:
 #line 30 "parser.y"
-                                                 {
+                                                {
               /* Print out Javascript needed for functions. */
-			  printf("config.options.title.text = %s;", (yyvsp[-1].strval));
+			  printf("\nconfig.options.title.text = '%s';", (yyvsp[-1].strval));
 			  printf("\n\n// array of functions\n"
 					 "var functions = [");
 			  }
@@ -1353,13 +1353,31 @@ yyreduce:
     break;
 
   case 7:
-#line 43 "parser.y"
-                                                         { printf("function() {newThread(); updateStatus(0)},") ;}
+#line 42 "parser.y"
+                                                                                                { printf("function() {newThread('%s', '%s', %d); updateStatus(0);},\n", (yyvsp[-4].strval), (yyvsp[-2].strval), (yyvsp[-6].ival)) ;}
 #line 1359 "y.tab.c"
     break;
 
+  case 8:
+#line 43 "parser.y"
+                                                                                   { printf("function() {performFunction('%s', '%s', %d, 'Action'); updateStatus(0);},\n", (yyvsp[-4].strval), (yyvsp[-2].strval), (yyvsp[-6].ival)) ;}
+#line 1365 "y.tab.c"
+    break;
 
-#line 1363 "y.tab.c"
+  case 9:
+#line 44 "parser.y"
+                                                                                 { printf("function() {performFunction('%s', '%s', %d, 'Waiting'); updateStatus(0);},\n", (yyvsp[-4].strval), (yyvsp[-2].strval), (yyvsp[-6].ival)) ;}
+#line 1371 "y.tab.c"
+    break;
+
+  case 10:
+#line 45 "parser.y"
+                                                                                 { printf("function() {performFunction('%s', '%s', %d, 'Ended'); updateStatus(0);},\n", (yyvsp[-4].strval), (yyvsp[-2].strval), (yyvsp[-6].ival)) ;}
+#line 1377 "y.tab.c"
+    break;
+
+
+#line 1381 "y.tab.c"
 
       default: break;
     }
@@ -1591,7 +1609,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 51 "parser.y"
+#line 50 "parser.y"
 
 
 int main() {

@@ -27,9 +27,9 @@ void yyerror(const char* s);
 %start begin_parse
 
 %%
-begin_parse: NUMBER DOUBLE_DASH STRINGLIT NEWLINE{
+begin_parse: NUMBER DOUBLE_DASH VARIABLE NEWLINE{
               /* Print out Javascript needed for functions. */
-			  printf("config.options.title.text = %s;", $3);
+			  printf("\nconfig.options.title.text = '%s';", $3);
 			  printf("\n\n// array of functions\n"
 					 "var functions = [");
 			  } 
@@ -39,11 +39,10 @@ thread_actions: thread_action
 		      | thread_actions NEWLINE thread_action
 			  ;
 thread_action: end_parse 
-			 | NUMBER DOUBLE_DASH VARIABLE 
-               DOUBLE_DASH STRINGLIT DOUBLE_DASH CREATED { printf("function() {newThread(); updateStatus(0)},") ;}
-             | NUMBER DOUBLE_DASH VARIABLE DOUBLE_DASH STRINGLIT DOUBLE_DASH ACTION
-             | NUMBER DOUBLE_DASH VARIABLE DOUBLE_DASH STRINGLIT DOUBLE_DASH WAIT
-             | NUMBER DOUBLE_DASH VARIABLE DOUBLE_DASH STRINGLIT DOUBLE_DASH DONE
+			 | NUMBER DOUBLE_DASH VARIABLE DOUBLE_DASH VARIABLE DOUBLE_DASH CREATED { printf("function() {newThread('%s', '%s', %d); updateStatus(0);},\n", $3, $5, $1) ;}
+             | NUMBER DOUBLE_DASH VARIABLE DOUBLE_DASH VARIABLE DOUBLE_DASH ACTION { printf("function() {performFunction('%s', '%s', %d, 'Action'); updateStatus(0);},\n", $3, $5, $1) ;}
+             | NUMBER DOUBLE_DASH VARIABLE DOUBLE_DASH VARIABLE DOUBLE_DASH WAIT { printf("function() {performFunction('%s', '%s', %d, 'Waiting'); updateStatus(0);},\n", $3, $5, $1) ;}
+             | NUMBER DOUBLE_DASH VARIABLE DOUBLE_DASH VARIABLE DOUBLE_DASH DONE { printf("function() {performFunction('%s', '%s', %d, 'Ended'); updateStatus(0);},\n", $3, $5, $1) ;}
 			 ;
 end_parse: 
             | QUIT 

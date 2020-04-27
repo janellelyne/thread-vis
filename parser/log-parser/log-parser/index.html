@@ -2,7 +2,7 @@
 <html>
 
 <head>
-      <title>Horizontal Bar Chart</title>
+      <title>Thread Chart Tool</title>
       <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=" crossorigin="anonymous"></script>
@@ -29,13 +29,17 @@
       	margin-top: 10px;
       	color: #17a2b8;
       }
+      p {
+      	font-size: 70%;
+      }
       .tooltiptext {
 	  visibility: hidden;
 	  width: 120px;
-	  background-color: black;
+	  background-color: gray;
 	  color: #fff;
-	  text-align: center;
-	  padding: 5px 0;
+	  text-align: left;
+	  font-family: Arial;
+	  padding-left: 10px;
 	  border-radius: 6px;
 	  position: absolute;
       z-index: 1;
@@ -71,11 +75,11 @@
 	<div class="container">
 		<i id="help-tip" class="fa fa-line-chart fa-lg">
 			<span class="tooltiptext">
-				<p>Chart Key</p>
-				<p><i class="fa fa-star" aria-hidden="true"></i></p>
-				<p><i class="fa fa-circle" aria-hidden="true"></i></p>
-				<p><i class="fa fa-square" aria-hidden="true"></i></p>
-				<p><i class="fa fa-caret-up" aria-hidden="true"></i></p>
+				<h5>Chart Key</h5>
+				<p><i class="fa fa-star" aria-hidden="true"></i> - Thread Creation</p>
+				<p><i class="fa fa-circle" aria-hidden="true"></i> - Performing Action</p>
+				<p><i class="fa fa-square" aria-hidden="true"></i> - Waiting</p>
+				<p><i class="fa fa-caret-up" aria-hidden="true"></i> - Done</p>
 			</span>
 		</i>
   <div class="row justify-content-md-center">
@@ -197,17 +201,124 @@ var anchors1 = document.getElementById('BackButton');
 // the UNIVERSAL counter for stepping through the function
 var i = -1;
 // Time counter
-var time = 0;
+var time1 = 5788655;
 var pointStep = 1;
 // Point counter for each thread
 var pointCount = [];
 // Last thread worked on
+config.options.title.text = "New Title";
 
-
-config.options.title.text = "Bank Program";
+var Threads = [];
+config.options.title.text = 'Hotel Simulation';
 
 // array of functions
-var functions = [function() {newThread(); updateStatus(0)},];
+var functions = [function() {newThread('Main thread', 'Start simulation', 1223047552); updateStatus(0);},
+function() {newThread('Receptionist 0', 'Created', 1250415584); updateStatus(0);},
+function() {newThread('Bellhop 0', 'Bellhop created', 1250600184); updateStatus(0);},
+function() {newThread('Receptionist 1', 'Created', 1250696984); updateStatus(0);},
+function() {newThread('Bellhop 1', 'Bellhop created', 1251155784); updateStatus(0);},
+function() {newThread('Guest 0', 'Created', 1256526984); updateStatus(0);},
+function() {newThread('Guest 3', 'Created', 1257260784); updateStatus(0);},
+function() {newThread('Guest 1', 'Created', 1258744292); updateStatus(0);},
+function() {performFunction('Guest 0', 'Enters hotel with 2 bags', 1258870892, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 0', 'Waits for a receptionist', 1258904692, 'Waiting'); updateStatus(0);},
+function() {newThread('Guest 4', 'Created', 1258937892); updateStatus(0);},
+function() {performFunction('Guest 3', 'Enters hotel with 1 bags', 1259402492, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 3', 'Waits for a receptionist', 1259432292, 'Waiting'); updateStatus(0);},
+function() {newThread('Guest 7', 'Created', 1259680792); updateStatus(0);},
+function() {newThread('Guest 8', 'Created', 1259777092); updateStatus(0);},
+function() {newThread('Guest 2', 'Created', 1259891792); updateStatus(0);},
+function() {performFunction('Guest 7', 'Enters hotel with 3 bags', 1259983992, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 7', 'Waits for a receptionist', 1260011092, 'Waiting'); updateStatus(0);},
+function() {newThread('Guest 5', 'Created', 1260116892); updateStatus(0);},
+function() {performFunction('Guest 1', 'Enters hotel with 0 bags', 1260226392, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 1', 'Waits for a receptionist', 1260263492, 'Waiting'); updateStatus(0);},
+function() {performFunction('Guest 4', 'Enters hotel with 2 bags', 1260397692, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 4', 'Waits for a receptionist', 1260417992, 'Waiting'); updateStatus(0);},
+function() {newThread('Guest 6', 'Created', 1260701892); updateStatus(0);},
+function() {performFunction('Guest 6', 'Enters hotel with 4 bags', 1260793492, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 6', 'Waits for a receptionist', 1260830892, 'Waiting'); updateStatus(0);},
+function() {performFunction('Receptionist 1', 'Registers guest 0 and assigns room 1', 1261117192, 'Action'); updateStatus(0);},
+function() {performFunction('Receptionist 1', 'Registers guest 3 and assigns room 2', 1261375892, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 0', 'Receives room key for room 1 from front desk employee 1', 1261468092, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 3', 'Receives room key for room 2 from front desk employee 1', 1261544692, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 3', 'Enters room 2', 1261652392, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 3', 'Retires for the evening', 1261749992, 'Action'); updateStatus(0);},
+function() {newThread('Guest 9', 'Created', 1262042292); updateStatus(0);},
+function() {performFunction('Guest 0', 'Enters room 1', 1262133292, 'Action'); updateStatus(0);},
+function() {performFunction('Receptionist 1', 'Registers guest 7 and assigns room 3', 1262241292, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 0', 'Retires for the evening', 1262334092, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 7', 'Receives room key for room 3 from front desk employee 1', 1262437092, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 7', 'Requests help for bags', 1262553992, 'Waiting'); updateStatus(0);},
+function() {performFunction('Receptionist 1', 'Registers guest 1 and assigns room 4', 1262762892, 'Action'); updateStatus(0);},
+function() {performFunction('Guest0', 'Joined', 1262793092, 'Ended'); updateStatus(0);},
+function() {performFunction('Receptionist 1', 'Registers guest 4 and assigns room 5', 1262882992, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 4', 'Receives room key for room 5 from front desk employee 1', 1263036492, 'Action'); updateStatus(0);},
+function() {performFunction('Receptionist 0', 'Registers guest 6 and assigns room 6', 1263106192, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 4', 'Enters room 5', 1263209492, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 8', 'Enters hotel with 4 bags', 1263294192, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 8', 'Waits for a receptionist', 1263321992, 'Waiting'); updateStatus(0);},
+function() {performFunction('Guest 4', 'Retires for the evening', 1263399792, 'Action'); updateStatus(0);},
+function() {performFunction('Bellhop 0', 'Receives bags from guest 7', 1263717892, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 7', 'Enters room 3', 1263875692, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 7', 'Waits for Bellboy 0', 1263898892, 'Waiting'); updateStatus(0);},
+function() {performFunction('Guest 1', 'Receives room key for room 4 from front desk employee 1', 1263993592, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 2', 'Enters hotel with 1 bags', 1264051592, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 2', 'Waits for a receptionist', 1264066992, 'Waiting'); updateStatus(0);},
+function() {performFunction('Bellhop 0', 'Delivered bages to guest 7', 1264169692, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 6', 'Receives room key for room 6 from front desk employee 0', 1264257192, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 7', 'Receives bags from bellhop 0 and gives tip', 1264377592, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 7', 'Retires for the evening', 1264463792, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 5', 'Enters hotel with 2 bags', 1264715692, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 5', 'Waits for a receptionist', 1264741892, 'Waiting'); updateStatus(0);},
+function() {performFunction('Guest 1', 'Enters room 4', 1264850792, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 9', 'Enters hotel with 4 bags', 1264954192, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 9', 'Waits for a receptionist', 1264986592, 'Waiting'); updateStatus(0);},
+function() {performFunction('Guest 6', 'Requests help for bags', 1265084092, 'Waiting'); updateStatus(0);},
+function() {performFunction('Bellhop 1', 'Receives bags from guest 6', 1265223092, 'Action'); updateStatus(0);},
+function() {performFunction('Receptionist 1', 'Registers guest 8 and assigns room 7', 1265345092, 'Action'); updateStatus(0);},
+function() {performFunction('Receptionist 1', 'Registers guest 2 and assigns room 8', 1265468092, 'Action'); updateStatus(0);},
+function() {performFunction('Receptionist 1', 'Registers guest 5 and assigns room 9', 1265616092, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 8', 'Receives room key for room 7 from front desk employee 1', 1265805292, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 8', 'Requests help for bags', 1265940292, 'Waiting'); updateStatus(0);},
+function() {performFunction('Receptionist 0', 'Registers guest 9 and assigns room 10', 1266059392, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 1', 'Retires for the evening', 1266700450, 'Action'); updateStatus(0);},
+function() {performFunction('Guest1', 'Joined', 1266768250, 'Ended'); updateStatus(0);},
+function() {performFunction('Guest 2', 'Receives room key for room 8 from front desk employee 1', 1267168100, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 2', 'Enters room 8', 1267407300, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 2', 'Retires for the evening', 1267615350, 'Action'); updateStatus(0);},
+function() {performFunction('Guest2', 'Joined', 1267694250, 'Ended'); updateStatus(0);},
+function() {performFunction('Guest3', 'Joined', 1267726950, 'Ended'); updateStatus(0);},
+function() {performFunction('Guest4', 'Joined', 1267774400, 'Ended'); updateStatus(0);},
+function() {performFunction('Guest 5', 'Receives room key for room 9 from front desk employee 1', 1268221600, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 5', 'Enters room 9', 1268445700, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 5', 'Retires for the evening', 1268605950, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 6', 'Enters room 6', 1268668200, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 6', 'Waits for Bellboy 1', 1268686750, 'Waiting'); updateStatus(0);},
+function() {performFunction('Guest5', 'Joined', 1268709450, 'Ended'); updateStatus(0);},
+function() {performFunction('Bellhop 1', 'Delivered bages to guest 6', 1268760000, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 9', 'Receives room key for room 10 from front desk employee 0', 1268911700, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 9', 'Requests help for bags', 1268949950, 'Waiting'); updateStatus(0);},
+function() {performFunction('Guest 6', 'Receives bags from bellhop 1 and gives tip', 1269006250, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 6', 'Retires for the evening', 1269044950, 'Action'); updateStatus(0);},
+function() {performFunction('Guest6', 'Joined', 1269225000, 'Ended'); updateStatus(0);},
+function() {performFunction('Guest7', 'Joined', 1269259150, 'Ended'); updateStatus(0);},
+function() {performFunction('Bellhop 0', 'Receives bags from guest 8', 1269439900, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 8', 'Enters room 7', 1269523200, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 8', 'Waits for Bellboy 0', 1269531850, 'Waiting'); updateStatus(0);},
+function() {performFunction('Bellhop 1', 'Receives bags from guest 9', 1269557550, 'Action'); updateStatus(0);},
+function() {performFunction('Bellhop 0', 'Delivered bages to guest 8', 1269667100, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 9', 'Enters room 10', 1269721950, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 9', 'Waits for Bellboy 1', 1269732600, 'Waiting'); updateStatus(0);},
+function() {performFunction('Guest 8', 'Receives bags from bellhop 0 and gives tip', 1269772100, 'Action'); updateStatus(0);},
+function() {performFunction('Bellhop 1', 'Delivered bages to guest 9', 1269797900, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 8', 'Retires for the evening', 1269824750, 'Action'); updateStatus(0);},
+function() {performFunction('Guest 9', 'Receives bags from bellhop 1 and gives tip', 1269850600, 'Action'); updateStatus(0);},
+function() {performFunction('Guest8', 'Joined', 1270233800, 'Ended'); updateStatus(0);},
+function() {performFunction('Guest 9', 'Retires for the evening', 1270277650, 'Action'); updateStatus(0);},
+function() {performFunction('Guest9', 'Joined', 1270346200, 'Ended'); updateStatus(0);},
+function() {performFunction('Main thread', 'End simulation', 1270411550, 'Ended'); updateStatus(0);},
+];
 
 var status_increment = 100 / functions.length;
 var status_remain = 100 % functions.length;
@@ -218,23 +329,25 @@ functions.push(function () { alert("Tool has finished tracing.")});
 
 
 		var colorNames = Object.keys(window.chartColors);
-	    function newThread() {
+	    function newThread(threadName, details, time) {
+	    	// Add new thread to thread name array
+	    	Threads.push(threadName);
 	    	// Update Status Bar
-	    	document.getElementById("status-msg").innerHTML = "Thread " + config.data.datasets.length + " Has Been Created At Time "+ time;
+	    	document.getElementById("status-msg").innerHTML = threadName + " Has Been Created At Time "+ time + " ns";
 	    	document.getElementById("status-msg").attributes.class = "alert alert-dark"; 
 	        // Update Status Table
 	        document.getElementById("thread-table").innerHTML += "<tr id='thread" + config.data.datasets.length + "'>" +
 						"<td>" +
 						"<input disabled type='text' id='name" + config.data.datasets.length + 
-						"'  placeholder='Thread " + config.data.datasets.length + "' class='form-control'/>" +
+						"'  placeholder='" + threadName + "' class='form-control'/>" +
 						"</td>" +
 						"<td>" +
 						"<input disabled type='text' id='status" + config.data.datasets.length + 
-						"' placeholder='Initialized' class='form-control'/>" +
+						"' placeholder='Created' class='form-control'/>" +
 						"</td>" +
 						"<td>" +
 						"<input disabled type='text' id='detail" + config.data.datasets.length + 
-						"' placeholder='' class='form-control'/>" +
+						"' placeholder='" + details + "' class='form-control'/>" +
 						"</td></tr>";
 
 	    	config.data.labels.push(time);
@@ -242,7 +355,7 @@ functions.push(function () { alert("Tool has finished tracing.")});
 			var colorName = colorNames[config.data.datasets.length % colorNames.length];
 			var newColor = window.chartColors[colorName];
 			var newDataset = {
-				label: 'Thread ' + config.data.datasets.length,
+				label: threadName,
 				data: [{x: time, y: pointStep++}],
 				
 					fill: false,
@@ -254,42 +367,33 @@ functions.push(function () { alert("Tool has finished tracing.")});
 					pointStyle: ['star', 'circle', 'rect'],
 					pointHoverRadius: 20,				
 			 }	;	
-			
-			/*for (var index = 0; index < config.data.datasets.length; ++index) {
-					if (typeof config.data.datasets[index].data[0] === 'object') {
-						config.data.datasets[index].data.push({x: time, y: index});
-					} else {
-						config.data.datasets[index].data.push();
-					}
-				}
-			window.myLine.update();
-			*/
+					
 			config.data.datasets.push(newDataset);
 			window.myLine.update();
-			time++;
+			
 		};
-		function performFunction(newX, changedIndex) {
+		function performFunction(threadName, details, time, action) {
+
+			    var changedIndex = Threads.indexOf(threadName);
 				// Update status bar and table
-				document.getElementById("status-msg").innerHTML = "Thread " + changedIndex + " Is Working On Function: At Time " + time;
+				document.getElementById("status-msg").innerHTML = threadName + " " + details + " at: " + time + " ns";
 	    	    document.getElementById("status-msg").attributes.class = "alert alert-success"; 
 	    	    var name = "status" + changedIndex;
-	    	    document.getElementById(name).setAttribute("placeholder", "Performing Function");
-
+	    	    document.getElementById(name).setAttribute("placeholder", action);
+	    	    var detail = "detail" + changedIndex;
+	    	    document.getElementById(detail).setAttribute("placeholder", details);
  				//config.data.datasets[changedIndex]['pointBackgroundColor'] = 'green';
  				//config.data.datasets[changedIndex]['pointStyle'] = 'circle';
-				config.data.datasets[changedIndex].data.push({x: newX, y: changedIndex+1});	
+				config.data.datasets[changedIndex].data.push({x: time, y: changedIndex+1});	
 				config.data.labels.push(time);
 		    	window.myLine.update();
-		    	time++;
-		    	//alert("Perform FUnction!");
 		};
-
 
 		function updateStatus(lastFunc){
 			// Update Progress Bar
 			if(lastFunc == 0){
 			   progPercent = progPercent + status_increment;
-			   document.getElementById("progress-bar").innerHTML = progPercent + "%";
+			   document.getElementById("progress-bar").innerHTML = Math.round(progPercent) + "%";
 		       document.getElementById("progress-bar").setAttribute("aria-valuenow", progPercent);
 		       document.getElementById("progress-bar").setAttribute("style", "width:" + progPercent + "%");
 			}
@@ -311,7 +415,7 @@ functions.push(function () { alert("Tool has finished tracing.")});
        // alert("i:" + i);
     }
     else {
-        functions[3]();
+        functions[functions.length -1]();
     }
     }
 

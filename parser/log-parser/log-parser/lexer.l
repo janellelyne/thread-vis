@@ -20,6 +20,6 @@
 "END"					{return DONE;}
 "DONE"					{return QUIT;}
 \"(\\.|[^"\\])*\"       {yylval.strval=strdup(yytext); return STRINGLIT; }
-[a-zA-Z][a-zA-Z0-9]+	{yylval.strval=strdup(yytext); return VARIABLE; }
+[a-zA-Z][a-zA-Z0-9 ]+	{yylval.strval=strdup(yytext); return VARIABLE; }
 [0-9]+			 		{yylval.fval = atof(yytext); return NUMBER;}
 %%
