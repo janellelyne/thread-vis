@@ -485,7 +485,7 @@ union yyalloc
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  6
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  12
+#define YYNRULES  11
 /* YYNSTATES -- Number of states.  */
 #define YYNSTATES  24
 
@@ -535,8 +535,8 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    30,    30,    30,    38,    39,    41,    42,    43,    44,
-      45,    47,    48
+       0,    28,    28,    28,    36,    37,    39,    40,    41,    42,
+      43,    45
 };
 #endif
 
@@ -586,8 +586,8 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     0,     0,     0,     1,     0,     2,    11,     0,    12,
-       3,     4,     6,     0,    11,     0,     5,     0,     0,     0,
+       0,     0,     0,     0,     1,     0,     2,     0,     0,    11,
+       3,     4,     6,     0,     0,     0,     5,     0,     0,     0,
        7,     8,     9,    10
 };
 
@@ -633,14 +633,14 @@ static const yytype_int8 yystos[] =
 static const yytype_int8 yyr1[] =
 {
        0,    13,    15,    14,    16,    16,    17,    17,    17,    17,
-      17,    18,    18
+      17,    18
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_int8 yyr2[] =
 {
        0,     2,     0,     6,     1,     3,     1,     7,     7,     7,
-       7,     0,     1
+       7,     1
 };
 
 
@@ -1336,7 +1336,7 @@ yyreduce:
   switch (yyn)
     {
   case 2:
-#line 30 "parser.y"
+#line 28 "parser.y"
                                                 {
               /* Print out Javascript needed for functions. */
 			  printf("\nconfig.options.title.text = '%s';", (yyvsp[-1].strval));
@@ -1347,31 +1347,31 @@ yyreduce:
     break;
 
   case 3:
-#line 36 "parser.y"
+#line 34 "parser.y"
                                          { printf("];\n\n"); }
 #line 1353 "y.tab.c"
     break;
 
   case 7:
-#line 42 "parser.y"
+#line 40 "parser.y"
                                                                                                 { printf("function() {newThread('%s', '%s', %d); updateStatus(0);},\n", (yyvsp[-4].strval), (yyvsp[-2].strval), (yyvsp[-6].ival)) ;}
 #line 1359 "y.tab.c"
     break;
 
   case 8:
-#line 43 "parser.y"
+#line 41 "parser.y"
                                                                                    { printf("function() {performFunction('%s', '%s', %d, 'Action'); updateStatus(0);},\n", (yyvsp[-4].strval), (yyvsp[-2].strval), (yyvsp[-6].ival)) ;}
 #line 1365 "y.tab.c"
     break;
 
   case 9:
-#line 44 "parser.y"
+#line 42 "parser.y"
                                                                                  { printf("function() {performFunction('%s', '%s', %d, 'Waiting'); updateStatus(0);},\n", (yyvsp[-4].strval), (yyvsp[-2].strval), (yyvsp[-6].ival)) ;}
 #line 1371 "y.tab.c"
     break;
 
   case 10:
-#line 45 "parser.y"
+#line 43 "parser.y"
                                                                                  { printf("function() {performFunction('%s', '%s', %d, 'Ended'); updateStatus(0);},\n", (yyvsp[-4].strval), (yyvsp[-2].strval), (yyvsp[-6].ival)) ;}
 #line 1377 "y.tab.c"
     break;
@@ -1609,7 +1609,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 50 "parser.y"
+#line 47 "parser.y"
 
 
 int main() {

@@ -1,0 +1,400 @@
+<!doctype html>
+<html>
+
+<head>
+      <title>Thread Chart Tool</title>
+      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.min.js"></script>
+      <script src="js/utils.js"></script>
+      <style>
+      canvas{
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+      }
+      body{
+      	background-color: #dee2e6;
+      }
+      h4{
+      	color: #495057;
+      	font-size: 100%;
+      }
+      div{
+      	background-color: white;
+      }
+      .fa-line-chart{
+      	float:right;
+      	margin-top: 10px;
+      	color: #17a2b8;
+      }
+      p {
+      	font-size: 70%;
+      }
+      .tooltiptext {
+	  visibility: hidden;
+	  width: 120px;
+	  background-color: gray;
+	  color: #fff;
+	  text-align: left;
+	  font-family: Arial;
+	  padding-left: 10px;
+	  border-radius: 6px;
+	  position: absolute;
+      z-index: 1;
+	}
+      .fa-line-chart:hover {
+       color: grey;
+     }
+     .fa-line-chart:hover .tooltiptext {
+         visibility: visible;
+     }
+     
+      .container{
+       margin-top: 3%;
+      }
+      .progress{
+      	width: 100%;
+	    border-color: black;
+	    border-style: solid;
+	    margin: 5px;
+	    border-width: thin;
+      }
+ 
+      #status{
+      	border-top: 2px solid #dee2e6;
+      	margin-top:20px;
+      	padding-top: 10px;
+
+      }
+      </style>
+</head>
+
+<body>
+	<div class="container">
+		<i id="help-tip" class="fa fa-line-chart fa-lg">
+			<span class="tooltiptext">
+				<h5>Chart Key</h5>
+				<p><i class="fa fa-star" aria-hidden="true"></i> - Thread Creation</p>
+				<p><i class="fa fa-circle" aria-hidden="true"></i> - Performing Action</p>
+				<p><i class="fa fa-square" aria-hidden="true"></i> - Waiting</p>
+				<p><i class="fa fa-caret-up" aria-hidden="true"></i> - Done</p>
+			</span>
+		</i>
+  <div class="row justify-content-md-center">
+	<div style="width:85%;">
+		<canvas id="canvas"></canvas>
+	</div>
+	<nav class="navbar navbar-light bg-light" style="width:85%;">
+  	<button class="btn btn-outline-info my-2 my-sm-0" id="NewButton"><i class="fa fa-caret-square-o-right" aria-hidden="true"></i> Trace</button>
+	<button class="btn btn-outline-info my-2 my-sm-0" id="BackButton"><i class="fa fa-refresh" aria-hidden="true"></i> Clear Chart</button>
+    </nav>
+</div>
+<div id="status" class="row justify-content-md-center">
+	<h4>Trace Status</h4>
+	<div class="progress" style="width:100%;">
+  <div id="progress-bar" class="progress-bar progress-bar-striped active" role="progressbar"
+  aria-valuenow="0%" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
+    0%
+  </div>
+</div>
+<div id="status-msg" class="alert alert-info" role="alert" style="width:100%;">
+  Click Trace to begin program.
+</div>
+<table class="table table-bordered" id="tab_logic">
+				<thead>
+					<tr >
+						<th class="text-center">
+							Thread Name
+						</th>
+						<th class="text-center">
+							Status
+						</th>
+						<th class="text-center">
+							Detail
+						</th>
+					</tr>
+				</thead>
+				<tbody id='thread-table'>					
+				</tbody>
+			</table>
+	</div>
+</div>
+	<script>
+		var timeFormat = 'MM/DD/YYYY HH:mm';
+
+		function newDate(days) {
+			return moment().add(days, 'd').toDate();
+		}
+
+		function newDateString(days) {
+			return moment().add(days, 'd').format(timeFormat);
+		}
+
+		var color = Chart.helpers.color;
+		var config = {
+			type: 'line',
+			
+			options: {
+                        legend: {
+                                 display: true,
+                                 position: 'right',
+                                 
+                                 labels: {padding: 20,
+                boxWidth: 30,
+                fillColor:'#dee2e6' 
+            }
+
+                            },
+                        responsive: true,
+                        title: {
+                              display: true,
+                              text: 'Thread Trace Chart',
+                              fontSize: 28,
+                              padding: 20
+                        },
+                        tooltips: {
+                              mode: 'x',
+                              intersect: false,
+                        },
+                        hover: {
+                              mode: 'x',
+                              intersect: false
+                        },
+				scales: {
+					xAxes: [{
+								 ticks: {
+				
+                min: 0,
+                stepSize: 0.5
+            },
+						scaleLabel: {
+							display: true,
+							labelString: 'Time'
+						}
+					}],
+					yAxes: [{
+						scaleLabel: {
+							display: true,
+							labelString: 'Thread Count'
+						},
+						ticks: {
+
+                min: 0,
+                stepSize: 0.5
+            },
+					}]
+				},
+			}
+		};
+
+		window.onload = function() {
+			var ctx = document.getElementById('canvas').getContext('2d');
+			window.myLine = new Chart(ctx, config);
+
+		};
+// Global Functions For Execution		
+// all buttons
+var anchors = document.getElementById('NewButton');
+var anchors1 = document.getElementById('BackButton');
+// the UNIVERSAL counter for stepping through the function
+var i = -1;
+// Time counter
+var time1 = 5788655;
+var pointStep = 1;
+// Point counter for each thread
+var pointCount = [];
+// Last thread worked on
+config.options.title.text = "New Title";
+
+var Threads = [];
+config.options.title.text = 'Car Shop Simulation';
+
+// array of functions
+var functions = [function() {newThread('Main thread', 'Start simulation', 1226253472); updateStatus(0);},
+function() {newThread('Car0', 'Car number 0 Enters shop', 1237383256); updateStatus(0);},
+function() {newThread('Car1', 'Car number 1 Enters shop', 1240966800); updateStatus(0);},
+function() {newThread('Car2', 'Car number 2 Enters shop', 1241159008); updateStatus(0);},
+function() {newThread('Car3', 'Car number 3 Enters shop', 1245681572); updateStatus(0);},
+function() {newThread('Car4', 'Car number 4 Enters shop', 1246570328); updateStatus(0);},
+function() {performFunction('Car4', 'Using tool 4', 1288462096, 'Action'); updateStatus(0);},
+function() {performFunction('Car2', 'Using tool 2', 1288469949, 'Action'); updateStatus(0);},
+function() {performFunction('Car4', 'Wants tool 3', 1288473854, 'Action'); updateStatus(0);},
+function() {performFunction('Car2', 'Wants tool 4', 1288476539, 'Action'); updateStatus(0);},
+function() {performFunction('Car0', 'Using tool 1', 1288479658, 'Action'); updateStatus(0);},
+function() {performFunction('Car0', 'Wants tool 4', 1288483607, 'Action'); updateStatus(0);},
+function() {performFunction('Car3', 'Using tool 2', 1288603342, 'Action'); updateStatus(0);},
+function() {performFunction('Car3', 'Wants tool 3', 1288607501, 'Action'); updateStatus(0);},
+function() {performFunction('Car1', 'Using tool 2', 1288664344, 'Action'); updateStatus(0);},
+function() {performFunction('Car1', 'Wants tool 4', 1288666830, 'Action'); updateStatus(0);},
+function() {performFunction('Car1', 'Has waited for a tool for too long', 1289569560, 'Ended'); updateStatus(0);},
+function() {performFunction('Car4', 'Using tool 3', 1296675355, 'Action'); updateStatus(0);},
+function() {performFunction('Car4', 'Wants tool 1', 1296681987, 'Action'); updateStatus(0);},
+function() {performFunction('Car2', 'Using tool 4', 1296687915, 'Action'); updateStatus(0);},
+function() {performFunction('Car2', 'Wants tool 4', 1296694018, 'Action'); updateStatus(0);},
+function() {performFunction('Car0', 'Using tool 4', 1296734924, 'Action'); updateStatus(0);},
+function() {performFunction('Car0', 'Wants tool 3', 1296742047, 'Action'); updateStatus(0);},
+function() {performFunction('Car3', 'Using tool 3', 1296747834, 'Action'); updateStatus(0);},
+function() {performFunction('Car3', 'Wants tool 1', 1296753942, 'Action'); updateStatus(0);},
+function() {performFunction('Car2', 'Using tool 4', 1301766419, 'Action'); updateStatus(0);},
+function() {performFunction('Car2', 'Wants tool 3', 1301768490, 'Action'); updateStatus(0);},
+function() {performFunction('Car4', 'Using tool 1', 1301770492, 'Action'); updateStatus(0);},
+function() {performFunction('Car4', 'Wants tool 1', 1301772074, 'Action'); updateStatus(0);},
+function() {performFunction('Car3', 'Using tool 1', 1301777840, 'Action'); updateStatus(0);},
+function() {performFunction('Car3', 'Wants tool 4', 1301779337, 'Action'); updateStatus(0);},
+function() {performFunction('Car0', 'Using tool 3', 1301783058, 'Action'); updateStatus(0);},
+function() {performFunction('Car0', 'Wants tool 4', 1301784502, 'Action'); updateStatus(0);},
+function() {performFunction('Car0', 'Using tool 4', 1305006599, 'Action'); updateStatus(0);},
+function() {performFunction('Car0', 'Wants tool 1', 1305008597, 'Action'); updateStatus(0);},
+function() {performFunction('Car4', 'Using tool 1', 1305014636, 'Action'); updateStatus(0);},
+function() {performFunction('Car4', 'Wants tool 1', 1305017052, 'Action'); updateStatus(0);},
+function() {performFunction('Car3', 'Using tool 4', 1305020957, 'Action'); updateStatus(0);},
+function() {performFunction('Car3', 'Wants tool 3', 1305023533, 'Action'); updateStatus(0);},
+function() {performFunction('Car2', 'Using tool 3', 1305028370, 'Action'); updateStatus(0);},
+function() {performFunction('Car2', 'Wants tool 4', 1305030203, 'Action'); updateStatus(0);},
+function() {performFunction('Car0', 'Using tool 1', 1308233186, 'Action'); updateStatus(0);},
+function() {performFunction('Car0', 'Wants tool 4', 1308236066, 'Action'); updateStatus(0);},
+function() {performFunction('Car2', 'Using tool 4', 1308240455, 'Action'); updateStatus(0);},
+function() {performFunction('Car2', 'Wants tool 1', 1308242215, 'Action'); updateStatus(0);},
+function() {performFunction('Car3', 'Using tool 3', 1308247605, 'Action'); updateStatus(0);},
+function() {performFunction('Car3', 'Wants tool 3', 1308249545, 'Action'); updateStatus(0);},
+function() {performFunction('Car4', 'Using tool 1', 1308253672, 'Action'); updateStatus(0);},
+function() {performFunction('Car4', 'Wants tool 3', 1308255292, 'Action'); updateStatus(0);},
+function() {performFunction('Car3', 'Using tool 3', 1310032816, 'Action'); updateStatus(0);},
+function() {performFunction('Car3', 'Wants tool 3', 1310033859, 'Action'); updateStatus(0);},
+function() {performFunction('Car4', 'Using tool 3', 1310073565, 'Action'); updateStatus(0);},
+function() {performFunction('Car4', 'Wants tool 2', 1310073898, 'Action'); updateStatus(0);},
+function() {performFunction('Car2', 'Using tool 1', 1310074703, 'Action'); updateStatus(0);},
+function() {performFunction('Car2', 'Wants tool 3', 1310075005, 'Action'); updateStatus(0);},
+function() {performFunction('Car0', 'Using tool 4', 1310076036, 'Action'); updateStatus(0);},
+function() {performFunction('Car0', 'Wants tool 3', 1310076622, 'Action'); updateStatus(0);},
+function() {performFunction('Car4', 'Has waited for a tool for too long', 1310169505, 'Ended'); updateStatus(0);},
+function() {performFunction('Car0', 'Has waited for a tool for too long', 1310190908, 'Ended'); updateStatus(0);},
+function() {performFunction('Customer 0', 'Joined', 1310196019, 'Ended'); updateStatus(0);},
+function() {performFunction('Customer 1', 'Joined', 1310197115, 'Ended'); updateStatus(0);},
+function() {performFunction('Car2', 'Using tool 3', 1311717797, 'Action'); updateStatus(0);},
+function() {performFunction('Car2', 'Wants tool 1', 1311719310, 'Action'); updateStatus(0);},
+function() {performFunction('Car3', 'Using tool 3', 1311724667, 'Action'); updateStatus(0);},
+function() {performFunction('Car3', 'Wants tool 1', 1311725150, 'Action'); updateStatus(0);},
+function() {performFunction('Car3', 'Using tool 1', 1313314983, 'Action'); updateStatus(0);},
+function() {performFunction('Car3', 'Wants tool 2', 1313315696, 'Action'); updateStatus(0);},
+function() {performFunction('Car2', 'Using tool 1', 1313317669, 'Action'); updateStatus(0);},
+function() {performFunction('Car2', 'Wants tool 2', 1313318294, 'Action'); updateStatus(0);},
+function() {performFunction('Car3', 'Has waited for a tool for too long', 1313420547, 'Ended'); updateStatus(0);},
+function() {performFunction('Car2', 'Has waited for a tool for too long', 1313430747, 'Ended'); updateStatus(0);},
+function() {performFunction('Customer 2', 'Joined', 1313433061, 'Ended'); updateStatus(0);},
+function() {performFunction('Customer 3', 'Joined', 1313433689, 'Ended'); updateStatus(0);},
+function() {performFunction('Customer 4', 'Joined', 1313434071, 'Ended'); updateStatus(0);},
+function() {performFunction('Main thread', 'End simulation', 1313437547, 'Ended'); updateStatus(0);},
+];
+
+var status_increment = 100 / functions.length;
+var status_remain = 100 % functions.length;
+var progPercent = 0;
+
+// ADD function to the list of functions to be ran
+functions.push(function () { alert("Tool has finished tracing.")});
+
+
+		var colorNames = Object.keys(window.chartColors);
+	    function newThread(threadName, details, time) {
+	    	// Add new thread to thread name array
+	    	Threads.push(threadName);
+	    	// Update Status Bar
+	    	document.getElementById("status-msg").innerHTML = threadName + " Has Been Created At Time "+ time + " ns";
+	    	document.getElementById("status-msg").attributes.class = "alert alert-dark"; 
+	        // Update Status Table
+	        document.getElementById("thread-table").innerHTML += "<tr id='thread" + config.data.datasets.length + "'>" +
+						"<td>" +
+						"<input disabled type='text' id='name" + config.data.datasets.length + 
+						"'  placeholder='" + threadName + "' class='form-control'/>" +
+						"</td>" +
+						"<td>" +
+						"<input disabled type='text' id='status" + config.data.datasets.length + 
+						"' placeholder='Created' class='form-control'/>" +
+						"</td>" +
+						"<td>" +
+						"<input disabled type='text' id='detail" + config.data.datasets.length + 
+						"' placeholder='" + details + "' class='form-control'/>" +
+						"</td></tr>";
+
+	    	config.data.labels.push(time);
+	    	pointCount.push(0);
+			var colorName = colorNames[config.data.datasets.length % colorNames.length];
+			var newColor = window.chartColors[colorName];
+			var newDataset = {
+				label: threadName,
+				data: [{x: time, y: pointStep++}],
+				
+					fill: false,
+					backgroundColor: color(newColor).alpha(0.5).rgbString(),
+					borderColor: newColor,
+					borderWidth: 10,
+					pointBackgroundColor: ["black", "green", "red", "green", "purple", "orange"],
+					pointRadius: 10,
+					pointStyle: ['star', 'circle', 'rect'],
+					pointHoverRadius: 20,				
+			 }	;	
+					
+			config.data.datasets.push(newDataset);
+			window.myLine.update();
+			
+		};
+		function performFunction(threadName, details, time, action) {
+
+			    var changedIndex = Threads.indexOf(threadName);
+				// Update status bar and table
+				document.getElementById("status-msg").innerHTML = threadName + " " + details + " at: " + time + " ns";
+	    	    document.getElementById("status-msg").attributes.class = "alert alert-success"; 
+	    	    var name = "status" + changedIndex;
+	    	    document.getElementById(name).setAttribute("placeholder", action);
+	    	    var detail = "detail" + changedIndex;
+	    	    document.getElementById(detail).setAttribute("placeholder", details);
+ 				//config.data.datasets[changedIndex]['pointBackgroundColor'] = 'green';
+ 				//config.data.datasets[changedIndex]['pointStyle'] = 'circle';
+				config.data.datasets[changedIndex].data.push({x: time, y: changedIndex+1});	
+				config.data.labels.push(time);
+		    	window.myLine.update();
+		};
+
+		function updateStatus(lastFunc){
+			// Update Progress Bar
+			if(lastFunc == 0){
+			   progPercent = progPercent + status_increment;
+			   document.getElementById("progress-bar").innerHTML = Math.round(progPercent) + "%";
+		       document.getElementById("progress-bar").setAttribute("aria-valuenow", progPercent);
+		       document.getElementById("progress-bar").setAttribute("style", "width:" + progPercent + "%");
+			}
+			else{
+				progPercent = progPercent + status_remain + status_increment;
+			   document.getElementById("progress-bar").innerHTML = progPercent + "%";
+		       document.getElementById("progress-bar").setAttribute("aria-valuenow", progPercent);
+		       document.getElementById("progress-bar").setAttribute("style", "width:" + progPercent + "%");
+			}
+		}
+		
+     // RUN FUNCTIONS FORWARD
+     // detect the click for first button
+     anchors.onclick = function() {    
+    // call the functions using i variable
+    if (i < functions.length) {
+        // increment i
+        functions[++i]();
+       // alert("i:" + i);
+    }
+    else {
+        functions[functions.length -1]();
+    }
+    }
+
+    // RESET CHART
+     anchors1.onclick = function() {  
+	 time = 0;
+	 i=0;
+     location.reload();
+    }
+	</script>
+</body>
+
+</html>

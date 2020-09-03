@@ -20,8 +20,6 @@ void yyerror(const char* s);
 %token<strval> VARIABLE STRINGLIT QUIT CREATED ACTION WAIT DONE
 %token NEWLINE DOUBLE_DASH 
 
-%type<ival> expression
-%type<fval> mixed_expression
 %type<strval> thread_actions thread_action end_parse
 
 %start begin_parse
@@ -44,8 +42,7 @@ thread_action: end_parse
              | NUMBER DOUBLE_DASH VARIABLE DOUBLE_DASH VARIABLE DOUBLE_DASH WAIT { printf("function() {performFunction('%s', '%s', %d, 'Waiting'); updateStatus(0);},\n", $3, $5, $1) ;}
              | NUMBER DOUBLE_DASH VARIABLE DOUBLE_DASH VARIABLE DOUBLE_DASH DONE { printf("function() {performFunction('%s', '%s', %d, 'Ended'); updateStatus(0);},\n", $3, $5, $1) ;}
 			 ;
-end_parse: 
-            | QUIT 
+end_parse: QUIT 
             ;
 %%
 

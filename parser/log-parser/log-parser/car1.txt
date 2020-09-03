@@ -1,0 +1,77 @@
+0--Car Shop Simulation started
+619082--Main thread--Start simulation--START
+1580811--Car0--Car number 0 Enters shop--START
+2028754--Car1--Car number 1 Enters shop--START
+2052780--Car2--Car number 2 Enters shop--START
+3139049--Car3--Car number 3 Enters shop--START
+3361238--Car4--Car number 4 Enters shop--START
+107149438--Car4--Using tool 4--ACTION
+107212264--Car2--Using tool 2--ACTION
+107243503--Car4--Wants tool: 3--ACTION
+107264984--Car2--Wants tool: 4--ACTION
+107289933--Car0--Using tool 1--ACTION
+107321531--Car0--Wants tool: 4--ACTION
+108279409--Car3--Using tool 2--ACTION
+108312677--Car3--Wants tool: 3--ACTION
+108767425--Car1--Using tool 2--ACTION
+108787314--Car1--Wants tool: 4--ACTION
+116009156--Car1--Has waited for a tool for too long--END
+211493299--Car4--Using tool 3--ACTION
+211599414--Car4--Wants tool: 1--ACTION
+211694249--Car2--Using tool 4--ACTION
+211791906--Car2--Wants tool: 4--ACTION
+212446399--Car0--Using tool 4--ACTION
+212560363--Car0--Wants tool: 3--ACTION
+212652961--Car3--Using tool 3--ACTION
+212750693--Car3--Wants tool: 1--ACTION
+317465184--Car2--Using tool 4--ACTION
+317531468--Car2--Wants tool: 3--ACTION
+317595521--Car4--Using tool 1--ACTION
+317646151--Car4--Wants tool: 1--ACTION
+317830651--Car3--Using tool 1--ACTION
+317878566--Car3--Wants tool: 4--ACTION
+317997628--Car0--Using tool 3--ACTION
+318043851--Car0--Wants tool: 4--ACTION
+421150943--Car0--Using tool 4--ACTION
+421214867--Car0--Wants tool: 1--ACTION
+421408138--Car4--Using tool 1--ACTION
+421485429--Car4--Wants tool: 1--ACTION
+421610399--Car3--Using tool 4--ACTION
+421692841--Car3--Wants tool: 3--ACTION
+421847616--Car2--Using tool 3--ACTION
+421906284--Car2--Wants tool: 4--ACTION
+524401739--Car0--Using tool 1--ACTION
+524493878--Car0--Wants tool: 4--ACTION
+524634336--Car2--Using tool 4--ACTION
+524690668--Car2--Wants tool: 1--ACTION
+524863151--Car3--Using tool 3--ACTION
+524925206--Car3--Wants tool: 3--ACTION
+525057278--Car4--Using tool 1--ACTION
+525109131--Car4--Wants tool: 3--ACTION
+627108887--Car3--Using tool 3--ACTION
+627175606--Car3--Wants tool: 3--ACTION
+629716795--Car4--Using tool 3--ACTION
+629738102--Car4--Wants tool: 2--ACTION
+629789650--Car2--Using tool 1--ACTION
+629808986--Car2--Wants tool: 3--ACTION
+629874962--Car0--Using tool 4--ACTION
+629912436--Car0--Wants tool: 3--ACTION
+635856941--Car4--Has waited for a tool for too long--END
+637226757--Car0--Has waited for a tool for too long--END
+637553876--Customer 0--Joined--END
+637623980--Customer 1--Joined--END
+734947621--Car2--Using tool 3--ACTION
+735044464--Car2--Wants tool: 1--ACTION
+735387298--Car3--Using tool 3--ACTION
+735418248--Car3--Wants tool: 1--ACTION
+837167574--Car3--Using tool 1--ACTION
+837213199--Car3--Wants tool: 2--ACTION
+837339432--Car2--Using tool 1--ACTION
+837379424--Car2--Wants tool: 2--ACTION
+843923622--Car3--Has waited for a tool for too long--END
+844576444--Car2--Has waited for a tool for too long--END
+844724516--Customer 2--Joined--END
+844764714--Customer 3--Joined--END
+844789191--Customer 4--Joined--END
+845011619--Main thread--End simulation--END
+DONE
